@@ -1,0 +1,31 @@
+{
+    "idxPath": ".\\idx\\",
+    "pdfPath": ".\\pdf\\",
+    "txtPath": ".\\txt\\",
+    "backupTxtPath": ".\\backup-txt\\",
+    "backupPath": ".\\backup\\",
+    "manualPath": ".\\manuell\\",
+    "stampPath": ".\\stamp\\",
+    "idxSrvDir": ".\\idx-srv\\",
+    "patterns": [
+        {
+            key: "pattern_01",
+            value: ["pattern_01_Merkmal_01","pattern_01_Merkmal_02","pattern_01_Merkmal_03","pattern_01_Merkmal_04","pattern_01_Merkmal_05"]
+        },
+        {
+            key: "pattern_02",
+            value: ["pattern_02_Merkmal_01","pattern_02_Merkmal_02","pattern_02_Merkmal_03","pattern_02_Merkmal_04","pattern_02_Merkmal_05"]
+        }
+
+    ],
+    "docTypes": [
+        {
+            key: "docType_01",
+            value: ["docType_01_Merkmal_01","docType_01_Merkmal_02","docType_01_Merkmal_03","docType_01_Merkmal_04","docType_01_Merkmal_05"]
+        },
+        {
+            key: "docType_02",
+            value: ["docType_02_Merkmal_01","docType_02_Merkmal_02","docType_02_Merkmal_03","docType_02_Merkmal_04","docType_02_Merkmal_05"]
+        }
+    ]
+}
