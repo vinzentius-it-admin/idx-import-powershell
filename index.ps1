@@ -58,7 +58,7 @@ write-host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 write-host 
 
 if (-not $files) {
-    Write-Log "Keine PDF Files in $pdfpath" warn -shell
+    Write-Log "Keine PDF Files in $pdfpath" warn
     exit 0
 }
 else {
@@ -96,8 +96,8 @@ else {
             continue fileloop
         }
 
-        Write-Log " " info
-        Write-Log "Neu:              $File " info
+        Write-Log " " info $idxSrvDir
+        Write-Log "Neu:              $File " info $idxSrvDir
 
 
         # check for docType
@@ -107,7 +107,7 @@ else {
         if (($DocType[0] -eq "Default") -and ($finds.count -gt 2)) {
             $DocType = $ArztbriefDocType
             $count = $finds.count
-            Write-Log "Ergebnis:         $count Treffer vom Dokumententyp Arztbrief in $filename " info
+            Write-Log "Ergebnis:         $count Treffer vom Dokumententyp Arztbrief in $filename " info $idxSrvDir
         }
 
         # Histologie
@@ -116,12 +116,12 @@ else {
         if (($DocType[0] -eq "Default") -and ($finds.count -gt 4)) {
             $DocType = $HistDocType
             $count = $finds.count
-            Write-Log "Ergebnis:         $count Treffer vom Dokumententyp Histologie in $filename " info
+            Write-Log "Ergebnis:         $count Treffer vom Dokumententyp Histologie in $filename " info $idxSrvDir
         }
 
         elseif ($DocType[0] -eq "Default") {
-            Write-Log "Kein Dokumententyp zuordenbar " warn 
-            Write-Log "Docs werden verschoben nach $manualpath und $backupPath" warn
+            Write-Log "Kein Dokumententyp zuordenbar " warn $idxSrvDir
+            Write-Log "Docs werden verschoben nach $manualpath und $backupPath" warn $idxSrvDir
             Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
             Move-Item -Force ${pdfPath}${pdfFile} $backupPath 
             Move-Item -Force $fileName $backupTxtPath
@@ -137,8 +137,8 @@ else {
                 $Matches = ""
  
                 if (-not ($line)) {
-                    Write-Log "KEINE FALLNUMMER Arztbrief" warn
-                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "KEINE FALLNUMMER Arztbrief" warn $idxSrvDir
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn $idxSrvDir
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -151,12 +151,12 @@ else {
                     # $decide = $Fallnr.Substring(3,1)
                     # if ($decide -eq "0") { $Fallnr = $Fallnr.substring(4,6) }
                     # else { $Fallnr = $Fallnr.Substring(3,7) }
-                    Write-Log "Fallnummer:       $Fallnr" info
+                    Write-Log "Fallnummer:       $Fallnr" info $idxSrvDir
                 }
                 else {
-                    Write-Log "Konnte Fallnummer nicht extrahieren aus " warn
-                    Write-Log "$line" warn
-                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "Konnte Fallnummer nicht extrahieren aus " warn $idxSrvDir
+                    Write-Log "$line" warn $idxSrvDir
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn $idxSrvDir
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -173,7 +173,7 @@ else {
 
                 if (-Not ([string]$line -Match ":\d{1,2}:(\w*)[,]\s*(\w*)")) {
                     # Write-Host $line " - nomatch Name, Vorname, geb. in $filename ($Doktype[1])"                
-                    Write-Log "$line - Kein Treffer für Name, Vorname in $filename ($Doktype[1])" warn
+                    Write-Log "$line - Kein Treffer für Name, Vorname in $filename ($Doktype[1])" warn $idxSrvDir
                     continue fileloop
                 }
 
@@ -181,9 +181,9 @@ else {
                 $Nachname = $Matches[1]
                 # $GebDatum = $Matches[3]
                 $GebDatum = "01.01.1970"
-                Write-Log "Vorname:          $Vorname" info
-                Write-Log "Nachname:         $Nachname" info
-                Write-Log "GebDatum:         $GebDatum" info
+                Write-Log "Vorname:          $Vorname" info $idxSrvDir
+                Write-Log "Nachname:         $Nachname" info $idxSrvDir
+                Write-Log "GebDatum:         $GebDatum" info $idxSrvDir
 
             }
 
@@ -191,12 +191,12 @@ else {
                 # Fallnummer
                 $fallPattern = @("Fall-Nr", "Fallnummer")
                 $line = Select-String -Pattern $fallPattern $fileName
-                Write-Log "Zeile:            $line " info
+                Write-Log "Zeile:            $line " info $idxSrvDir
                 $Matches = ""
 
                 if (-not ($line)) {
-                    Write-Log "KEINE FALLNUMMER Histologie" warn
-                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "KEINE FALLNUMMER Histologie" warn $idxSrvDir
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn $idxSrvDir
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -206,11 +206,11 @@ else {
                 # if (-Not ($line -Match "Fall-Nr.: (\d{7}|\d{6})")) {
                 if ([string]$line -Match "Fall-Nr.:\s*(\d{7}|\d{6})") {
                     $Fallnr = $Matches[1]
-                    Write-Log "Fallnummer:       $Fallnr" info
+                    Write-Log "Fallnummer:       $Fallnr" info $idxSrvDir
                 }
                 else {
-                    Write-Log "Konnte Fallnummer nicht extrahieren aus " warn
-                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "Konnte Fallnummer nicht extrahieren aus " warn $idxSrvDir
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn $idxSrvDir
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -223,7 +223,7 @@ else {
                 # Match auf Patient etc                      
                 # if (-Not ([string]$line -Match "Patient.*:\s*\w*(?:\s*\w*)?(?:[,.])?\s*(\w*)(?:[,.])?\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {
                 if (-Not ([string]$line -Match "Patient.*:.*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {                
-                    Write-Log "$line - Keine Treffer für Name, Vorname in $filename ($Doktype[1])" warn
+                    Write-Log "$line - Keine Treffer für Name, Vorname in $filename ($Doktype[1])" warn $idxSrvDir
                     continue fileloop
                 }
                 
@@ -233,12 +233,12 @@ else {
                 
                 # Nachname, Vorname
                 if ([string]$line -Match "Patient.*:\s*(\w*)[,.]\s*(\w*)\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                    Write-Log "Zeile:            $line " info
+                    Write-Log "Zeile:            $line " info $idxSrvDir
                     $Vorname = $Matches[2]
                     $Nachname = $Matches[1]
                 }      # Check: 2 Vornamen
                 elseif ([string]$line -Match "Patient.*:\s*(\w*)\s*(\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                    Write-Log "Zeile:            $line " info
+                    Write-Log "Zeile:            $line " info $idxSrvDir
                     if ($matches[3]) {
                         # Drei Namen, 3. ist Nachname
                         $Vorname = -join ($Matches[1], " ", $Matches[2])
@@ -252,26 +252,26 @@ else {
                     }
                 }      # Check: Doppelter Vorname
                 elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                    Write-Log "Zeile:            $line " info
+                    Write-Log "Zeile:            $line " info $idxSrvDir
                     $Vorname = $Matches[2]
                     $Nachname = $Matches[1]
 
                 }
                 else {
-                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn $idxSrvDir
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backuptxtPath 
                     continue fileloop  
                 } 
     
-                Write-Log "Vorname:          $Vorname" info 
-                Write-Log "Nachname:         $Nachname" info 
-                Write-Log "GebDatum:         $GebDatum" info 
+                Write-Log "Vorname:          $Vorname" info $idxSrvDir
+                Write-Log "Nachname:         $Nachname" info $idxSrvDir
+                Write-Log "GebDatum:         $GebDatum" info $idxSrvDir
             }
 
             default {
-                Write-Log "seltener Fall: default - loop" warn
+                Write-Log "seltener Fall: default - loop" warn $idxSrvDir
                 $count_nothing += 1
                 continue fileloop
             }
@@ -280,9 +280,24 @@ else {
 
         # write files
         if ($writeidx) {
+            try {
+                Write-IDXFile $Fallnr $DokType $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $pdfFile $pdfPath
+            }
+            catch {
+                Write-Log "Problem mit dem Schreiben von $idxfile" error $idxSrvDir
+                Write-Log "Parameter: $Fallnr $DokType $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $pdfFile $pdfPath" error $idxSrvDir
+                Write-Log "Dateien bleiben unberührt; Vorgang abgebrochen" error $idxSrvDir
+                break fileloop
+            }
+    
+            Write-Log "Kopiere $idxfile nach $okfile" info $idxSrvDir
+            Copy-Item $idxfile $okfile
+            Write-Log "Verschiebe ${pdfPath}${pdfFile} und $filename nach $backupPath " info $idxSrvDir
+            #Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+            #Move-Item -Force $fileName $backupTxtPath
         }
     
     }
 
-    Write-Log "Unzugeordnet:     $count_nothing " info
+    Write-Log "Unzugeordnet:     $count_nothing " info $idxSrvDir
 }
