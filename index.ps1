@@ -97,7 +97,35 @@ else {
         }
 
         Write-Log " " info
-        Write-Log "new $File " info
+        Write-Log "Neu:          $File " info
+
+
+        # Arztbrief
+        $finds = Select-String -Pattern $ArztbriefPattern $fileName
+
+        if (($DocType[0] -eq "Default") -and ($finds.count -gt 2)) {
+            $DocType = $ArztbriefDocType
+            $count = $finds.count
+            write-log "Ergebnis:     $count Treffer vom Dokumententyp Arztbrief in $filename " info
+        }
+
+        # Histologie
+        $finds = Select-String -Pattern $HistoPattern $fileName
+        
+        if (($DocType[0] -eq "Default") -and ($finds.count -gt 4)) {
+            $DocType = $HistDocType
+            $count = $finds.count
+            write-log "Ergebnis:     $count Treffer vom Dokumententyp Histologie in $filename " info
+        }
+
+        elseif ($DocType[0] -eq "Default") {
+            write-Log "Kein Doctype " warn 
+            write-log "Docs werden verschoben nach $manualpath und $backupPath" warn
+            Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
+            Move-Item -Force ${pdfPath}${pdfFile} $backupPath 
+            Move-Item -Force $fileName $backupTxtPath
+            continue fileloop
+        }
     }
 
     write-Log "Unzugeordnet: $count_nothing " info
