@@ -32,3 +32,4 @@ $manualPath = $config.manualPath
 $stampPath = $config.stampPath
 $idxSrvDir = $config.idxSrvDir
 
+$files = Get-ChildItem $pdfPath -Filter *.pdf
