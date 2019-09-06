@@ -1,12 +1,12 @@
 {
-    "idxPath": ".\\idx\\",
-    "pdfPath": ".\\pdf\\",
-    "txtPath": ".\\txt\\",
-    "backupTxtPath": ".\\backup-txt\\",
-    "backupPath": ".\\backup\\",
-    "manualPath": ".\\manuell\\",
-    "stampPath": ".\\stamp\\",
-    "idxSrvDir": ".\\idx-srv\\",
+    "idxPath": "./idx/",
+    "pdfPath": "./pdf/",
+    "txtPath": "./txt/",
+    "backupTxtPath": "./backup-txt/",
+    "backupPath": "./backup/",
+    "manualPath": "./manuell/",
+    "stampPath": "./stamp/",
+    "idxSrvDir": "./idx-srv/",
     "patterns": [
         {
             key: "pattern_01",
