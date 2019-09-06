@@ -23,6 +23,7 @@ $ArztbriefDocType = @($config.docTypes[0].value)
 $HistoPattern = @($config.patterns[1].value)
 $HistDocType = @($config.docTypes[1].value)
 
+$department = $config.department
 $idxPath = $config.idxPath
 $pdfPath = $config.pdfPath               # Quelle PDF
 $txtPath = $config.txtPath               # Quelle TXT
@@ -281,11 +282,11 @@ else {
         # write files
         if ($writeidx) {
             try {
-                Write-IDXFile $Fallnr $DokType $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $pdfFile $pdfPath
+                Write-IDXFile $department $Fallnr $DokType $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $pdfFile $pdfPath
             }
             catch {
                 Write-Log "Problem mit dem Schreiben von $idxfile" error $idxSrvDir
-                Write-Log "Parameter: $Fallnr $DokType $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $pdfFile $pdfPath" error $idxSrvDir
+                Write-Log "Parameter: $department $Fallnr $DokType $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $pdfFile $pdfPath" error $idxSrvDir
                 Write-Log "Dateien bleiben unberührt; Vorgang abgebrochen" error $idxSrvDir
                 break fileloop
             }

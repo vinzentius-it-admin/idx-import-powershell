@@ -63,7 +63,7 @@ function Write-Log {
     }
 }
 
-function Write-IDXFile ($Fallnr, $DokType, $Nachname, $Vorname, $GebDatum, $Datum, $idxFile, $idxPath, $pdfFile, $pdfPath) {
+function Write-IDXFile ($department, $Fallnr, $DokType, $Nachname, $Vorname, $GebDatum, $Datum, $idxFile, $idxPath, $pdfFile, $pdfPath) {
     # Remove-Item ${idxpath}${pdffile} -Force -ErrorAction SilentlyContinue
     Copy-Item ${pdfpath}${pdffile} ${idxpath}   
 
@@ -73,13 +73,13 @@ function Write-IDXFile ($Fallnr, $DokType, $Nachname, $Vorname, $GebDatum, $Datu
 <idx>
 
 
-S-DMS
-
-
-
 {0}
+
+
+
 {1}
 {2}
+{3}
 
 
 
@@ -87,10 +87,10 @@ S-DMS
 
 </idx>
 <n2>
-{3}
 {4}
-
 {5}
+
+{6}
 
 
 
@@ -108,9 +108,9 @@ S-DMS
 </n3>
 <n4>
 
-{6}
-
 {7}
+
+{8}
 
 
 
@@ -125,12 +125,12 @@ S-DMS
 
 </usr>
 <img>
-{8}
+{9}
 </img>
 </Patientenakte>
-"@ -f $Fallnr, $DocType[0], $DocType[1], $Nachname, $Vorname, $GebDatum, $Datum, $DocType[2], $pdfFile
+"@ -f $department, $Fallnr, $DocType[0], $DocType[1], $Nachname, $Vorname, $GebDatum, $Datum, $DocType[2], $pdfFile
 
-    $s | Out-File -Encoding Windows-1252 -FilePath $idxFile
+    $s | Out-File -Encoding "Windows-1252" -FilePath $idxFile
 }
 
 function Write-PDFStamped ($stampTool, $pdfPath, $pdfFile, $stampPDF, $stampedPDF) { 

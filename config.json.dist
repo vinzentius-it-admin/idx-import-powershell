@@ -1,4 +1,5 @@
 {
+    "department": "LAB",
     "idxPath": "./idx/",
     "pdfPath": "./pdf/",
     "txtPath": "./txt/",
