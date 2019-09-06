@@ -278,11 +278,11 @@ else {
                     break fileloop
                 }
     
-                Write-Log "Kopiere $idxfile nach $okfile" info $idxSrvDir
+                Write-Log "Kopiere           $idxfile nach $okfile" info $idxSrvDir
                 Copy-Item $idxfile $okfile
-                Write-Log "Verschiebe ${pdfPath}${pdfFile} und $filename nach $backupPath " info $idxSrvDir
-                #Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                #Move-Item -Force $fileName $backupTxtPath
+                Write-Log "Verschiebe        ${pdfPath}${pdfFile} und $filename nach $backupPath " info $idxSrvDir
+                Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                Move-Item -Force $fileName $backupTxtPath
             }
 
         }
