@@ -15,3 +15,20 @@ if (!$checkFile) {
 }
 
 $config = Get-Content -Raw -Path $configFilePath | ConvertFrom-Json
+
+# Problem: ggf falsche/keine Fallnummer
+$ArztbriefPattern = @($config.patterns[0].value)
+$ArztbriefDocType = @($config.docTypes[0].value)
+
+$HistoPattern = @($config.patterns[1].value)
+$HistDocType = @($config.docTypes[1].value)
+
+$idxPath = $config.idxPath
+$pdfPath = $config.pdfPath               # Quelle PDF
+$txtPath = $config.txtPath               # Quelle TXT
+$backupTxtPath = $config.backupTxtPath
+$backupPath = $config.backupPath
+$manualPath = $config.manualPath
+$stampPath = $config.stampPath
+$idxSrvDir = $config.idxSrvDir
+
