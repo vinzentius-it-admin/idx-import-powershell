@@ -44,3 +44,22 @@ $Datum = Get-Date -Format dd.MM.yyyy
 # counter for non-assignable cases
 $count_nothing = 0
 
+
+clear-host
+write-host " # # # # # # # # # # # # # "
+write-host 
+write-host "  LOGGING NACH $idxSrvDir "
+write-host
+write-host "  Zum Schreiben von Indexdateien nach $idxPath "
+Write-Host
+Write-Host "  Programm starten mit Parameter -writeidx "
+Write-Host
+write-host " # # # # # # # # # # # # # "
+
+
+if (-not $files) {
+    Write-Log "Keine PDF Files in $pdfpath" warn -shell
+    exit 0
+}
+else {
+}
