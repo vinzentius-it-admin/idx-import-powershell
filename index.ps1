@@ -62,4 +62,43 @@ if (-not $files) {
     exit 0
 }
 else {
+    
+    :fileloop foreach ($file in $files) {
+
+        $DocType = @("Default", "nix", "nix")       # Reset counters for loop
+        $finds = "0"
+        $Matches = ""
+        $line = ""
+        $Fallnr = ""
+        $Name = ""
+        $Vorname = ""
+        $GebDatum = ""
+        $count = ""
+        $now = Get-Date -format "dd.MM.yyyy hh.mm.ss"
+
+        $baseName = $file.name -replace ".pdf", ""
+
+        $pdfFile = -join ($baseName, ".pdf")
+        $idxFile = -join ($baseName, ".idx")
+        $txtFile = -join ($baseName, ".txt")
+        $okfile = -join ($baseName, ".ok")
+
+        $idxFile = -join ($idxPath, $idxFile)
+        $okfile = -join ($idxPath, $okFile)
+
+        $fileName = -join ($txtPath, $txtFile)
+        $pdfFileName = -join ($pdfPath, $pdfFile)
+
+        if (-Not (Test-Path $fileName)) {
+            continue fileloop
+        }
+        if (-Not (Test-Path $pdfFileName)) {
+            continue fileloop
+        }
+
+        Write-Log " " info
+        Write-Log "new $File " info
+    }
+
+    write-Log "Unzugeordnet: $count_nothing " info
 }
