@@ -95,7 +95,7 @@ else {
         if (($DocType[0] -eq "Default") -and ($finds.count -gt 2)) {
             $DocType = $ArztbriefDocType
             $count = $finds.count
-            write-log "Ergebnis:         $count Treffer vom Dokumententyp Arztbrief in $filename " info
+            Write-Log "Ergebnis:         $count Treffer vom Dokumententyp Arztbrief in $filename " info
         }
 
         # Histologie
@@ -104,12 +104,12 @@ else {
         if (($DocType[0] -eq "Default") -and ($finds.count -gt 4)) {
             $DocType = $HistDocType
             $count = $finds.count
-            write-log "Ergebnis:         $count Treffer vom Dokumententyp Histologie in $filename " info
+            Write-Log "Ergebnis:         $count Treffer vom Dokumententyp Histologie in $filename " info
         }
 
         elseif ($DocType[0] -eq "Default") {
-            write-Log "Kein Dokumententyp zuordenbar " warn 
-            write-log "Docs werden verschoben nach $manualpath und $backupPath" warn
+            Write-Log "Kein Dokumententyp zuordenbar " warn 
+            Write-Log "Docs werden verschoben nach $manualpath und $backupPath" warn
             Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
             Move-Item -Force ${pdfPath}${pdfFile} $backupPath 
             Move-Item -Force $fileName $backupTxtPath
@@ -126,7 +126,7 @@ else {
  
                 if (-not ($line)) {
                     Write-Log "KEINE FALLNUMMER Arztbrief" warn
-                    write-log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -143,8 +143,8 @@ else {
                 }
                 else {
                     Write-Log "Konnte Fallnummer nicht extrahieren aus " warn
-                    write-log "$line" warn
-                    write-log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "$line" warn
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -184,7 +184,7 @@ else {
 
                 if (-not ($line)) {
                     Write-Log "KEINE FALLNUMMER Histologie" warn
-                    write-log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -198,7 +198,7 @@ else {
                 }
                 else {
                     Write-Log "Konnte Fallnummer nicht extrahieren aus " warn
-                    write-log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backupTxtPath 
@@ -246,7 +246,7 @@ else {
 
                 }
                 else {
-                    write-log "Verschiebe Dateien nach $manualpath und $backupPath" warn
+                    Write-Log "Verschiebe Dateien nach $manualpath und $backupPath" warn
                     Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                     Move-Item -Force ${pdfPath}${pdfFile} $backupPath
                     Move-Item -Force $fileName $backuptxtPath 
@@ -259,7 +259,7 @@ else {
             }
 
             default {
-                write-log "seltener Fall: default - loop" warn
+                Write-Log "seltener Fall: default - loop" warn
                 $count_nothing += 1
                 continue fileloop
             }
@@ -274,7 +274,8 @@ else {
             write-host "  LOGGING NACH $idxSrvDir                              "
             write-host 
             write-host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-        } else {
+        }
+        else {
             clear-host
             write-host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
             write-host 
@@ -289,5 +290,5 @@ else {
     
     }
 
-    write-Log "Unzugeordnet:     $count_nothing " info
+    Write-Log "Unzugeordnet:     $count_nothing " info
 }
