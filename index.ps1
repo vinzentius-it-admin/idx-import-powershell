@@ -37,3 +37,6 @@ $files = Get-ChildItem $pdfPath -Filter *.pdf
 # $Datum = Get-Date -Format yyyy.MM.dd
 # $logfile = -join($Datum,".log")
 $Datum = Get-Date -Format dd.MM.yyyy
+
+# load helper functions
+. ./utils.ps1
