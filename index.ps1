@@ -45,18 +45,6 @@ $Datum = Get-Date -Format dd.MM.yyyy
 $count_nothing = 0
 
 
-clear-host
-write-host " # # # # # # # # # # # # # "
-write-host 
-write-host "  LOGGING NACH $idxSrvDir "
-write-host
-write-host "  Zum Schreiben von Indexdateien nach $idxPath "
-Write-Host
-Write-Host "  Programm starten mit Parameter -writeidx "
-Write-Host
-write-host " # # # # # # # # # # # # # "
-
-
 if (-not $files) {
     Write-Log "Keine PDF Files in $pdfpath" warn -shell
     exit 0
@@ -120,7 +108,7 @@ else {
         }
 
         elseif ($DocType[0] -eq "Default") {
-            write-Log "Kein Doctype " warn 
+            write-Log "Kein Dokumententyp zuordenbar " warn 
             write-log "Docs werden verschoben nach $manualpath und $backupPath" warn
             Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
             Move-Item -Force ${pdfPath}${pdfFile} $backupPath 
@@ -151,7 +139,7 @@ else {
                     # $decide = $Fallnr.Substring(3,1)
                     # if ($decide -eq "0") { $Fallnr = $Fallnr.substring(4,6) }
                     # else { $Fallnr = $Fallnr.Substring(3,7) }
-                    Write-Log "Fallnummer        $Fallnr" info
+                    Write-Log "Fallnummer:       $Fallnr" info
                 }
                 else {
                     Write-Log "Konnte Fallnummer nicht extrahieren aus " warn
@@ -173,7 +161,7 @@ else {
 
                 if (-Not ([string]$line -Match ":\d{1,2}:(\w*)[,]\s*(\w*)")) {
                     # Write-Host $line " - nomatch Name, Vorname, geb. in $filename ($Doktype[1])"                
-                    Write-Log "$line - nomatch Name, Vorname in $filename ($Doktype[1])" warn
+                    Write-Log "$line - Kein Treffer für Name, Vorname in $filename ($Doktype[1])" warn
                     continue fileloop
                 }
 
@@ -181,9 +169,9 @@ else {
                 $Nachname = $Matches[1]
                 # $GebDatum = $Matches[3]
                 $GebDatum = "01.01.1970"
-                Write-Log "Vorname $Vorname" info
-                Write-Log "Nachname $Nachname" info
-                Write-Log "GebDatum $GebDatum" info
+                Write-Log "Vorname:          $Vorname" info
+                Write-Log "Nachname:         $Nachname" info
+                Write-Log "GebDatum:         $GebDatum" info
 
             }
 
@@ -191,7 +179,7 @@ else {
                 # Fallnummer
                 $fallPattern = @("Fall-Nr", "Fallnummer")
                 $line = Select-String -Pattern $fallPattern $fileName
-                Write-Log "Zeile             $line " info
+                Write-Log "Zeile:            $line " info
                 $Matches = ""
 
                 if (-not ($line)) {
@@ -206,7 +194,7 @@ else {
                 # if (-Not ($line -Match "Fall-Nr.: (\d{7}|\d{6})")) {
                 if ([string]$line -Match "Fall-Nr.:\s*(\d{7}|\d{6})") {
                     $Fallnr = $Matches[1]
-                    Write-Log "Fallnummer        $Fallnr" info
+                    Write-Log "Fallnummer:       $Fallnr" info
                 }
                 else {
                     Write-Log "Konnte Fallnummer nicht extrahieren aus " warn
@@ -233,12 +221,12 @@ else {
                 
                 # Nachname, Vorname
                 if ([string]$line -Match "Patient.*:\s*(\w*)[,.]\s*(\w*)\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                    Write-Log "Zeile             $line " info
+                    Write-Log "Zeile:            $line " info
                     $Vorname = $Matches[2]
                     $Nachname = $Matches[1]
                 }      # Check: 2 Vornamen
                 elseif ([string]$line -Match "Patient.*:\s*(\w*)\s*(\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                    Write-Log "Zeile             $line " info
+                    Write-Log "Zeile:            $line " info
                     if ($matches[3]) {
                         # Drei Namen, 3. ist Nachname
                         $Vorname = -join ($Matches[1], " ", $Matches[2])
@@ -252,7 +240,7 @@ else {
                     }
                 }      # Check: Doppelter Vorname
                 elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                    Write-Log "Zeile             $line " info
+                    Write-Log "Zeile:            $line " info
                     $Vorname = $Matches[2]
                     $Nachname = $Matches[1]
 
@@ -265,9 +253,9 @@ else {
                     continue fileloop  
                 } 
     
-                Write-Log "Vorname           $Vorname" info 
-                Write-Log "Nachname          $Nachname" info 
-                Write-Log "GebDatum          $GebDatum" info 
+                Write-Log "Vorname:          $Vorname" info 
+                Write-Log "Nachname:         $Nachname" info 
+                Write-Log "GebDatum:         $GebDatum" info 
             }
 
             default {
@@ -277,6 +265,28 @@ else {
             }
 
         }
+
+        # write files
+        if ($writeidx) {
+            clear-host
+            write-host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+            write-host 
+            write-host "  LOGGING NACH $idxSrvDir                              "
+            write-host 
+            write-host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+        } else {
+            clear-host
+            write-host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+            write-host 
+            write-host "  LOGGING NACH $idxSrvDir                              "
+            write-host 
+            write-host "  Zum Schreiben von Indexdateien nach $idxPath         "
+            Write-Host
+            Write-Host "  Programm starten mit Parameter -writeidx             "
+            write-host 
+            write-host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+        }
+    
     }
 
     write-Log "Unzugeordnet:     $count_nothing " info
