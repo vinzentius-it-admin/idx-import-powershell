@@ -271,7 +271,7 @@ else {
             }
 
             default {
-                Write-Log "seltener Fall: default - loop" warn $idxSrvDir
+                Write-Log "Seltener Fall. Weiter mit nächsten Datei..." warn $idxSrvDir
                 $count_nothing += 1
                 continue fileloop
             }
