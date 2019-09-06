@@ -40,3 +40,7 @@ $Datum = Get-Date -Format dd.MM.yyyy
 
 # load helper functions
 . ./utils.ps1
+
+# counter for non-assignable cases
+$count_nothing = 0
+
