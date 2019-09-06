@@ -1,3 +1,11 @@
+# matcht Doktype und gibt relevantes auf der Konsole aus; Verschieben von Dokumenten nur in den Manual - Path zur manuellen Bearbeitung
+# Schreiben an die Schnittstelle, wenn Argument -writeidx angegeben
+
+Param (
+    [Parameter(Mandatory = $false)]
+    [switch]$writeidx
+)
+
 $configFilePath = "config.json"
 $configDistFilePath = "config.json.dist"
 $checkFile = Test-Path $configFilePath
