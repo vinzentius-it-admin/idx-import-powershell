@@ -11,11 +11,13 @@
     "patterns": [
         {
             key: "pattern_01",
-            value: ["pattern_01_Merkmal_01","pattern_01_Merkmal_02","pattern_01_Merkmal_03","pattern_01_Merkmal_04","pattern_01_Merkmal_05"]
+            value: ["pattern_01_Merkmal_01","pattern_01_Merkmal_02","pattern_01_Merkmal_03","pattern_01_Merkmal_04","pattern_01_Merkmal_05"],
+            gt: 4
         },
         {
             key: "pattern_02",
-            value: ["pattern_02_Merkmal_01","pattern_02_Merkmal_02","pattern_02_Merkmal_03","pattern_02_Merkmal_04","pattern_02_Merkmal_05"]
+            value: ["pattern_02_Merkmal_01","pattern_02_Merkmal_02","pattern_02_Merkmal_03","pattern_02_Merkmal_04","pattern_02_Merkmal_05"],
+            gt: 2
         }
 
     ],
