@@ -1,13 +1,13 @@
 {
     "department": "LAB",
-    "idxPath": "./idx/",
-    "pdfPath": "./pdf/",
-    "txtPath": "./txt/",
-    "backupTxtPath": "./backup-txt/",
-    "backupPath": "./backup/",
-    "manualPath": "./manuell/",
-    "stampPath": "./stamp/",
-    "idxSrvDir": "./idx-srv/",
+    "idxPath": "./data/idx/",
+    "pdfPath": "./data/pdf/",
+    "txtPath": "./data/txt/",
+    "backupTxtPath": "./data/backup-txt/",
+    "backupPath": "./data/backup/",
+    "manualPath": "./data/manuell/",
+    "stampPath": "./data/stamp/",
+    "logsPath": "./logs/",
     "patterns": [
         {
             key: "pattern_01",

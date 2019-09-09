@@ -1,12 +1,5 @@
 .env
 config.json
 
-backup/*
-backup-txt/*
-idx/*
-idx-srv/*
-manuell/*
-pdf/*
-stamp/*
-txt/*
+data/*
 logs/*
