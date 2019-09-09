@@ -17,7 +17,7 @@ function Write-Log {
         [string]$Level = "Info",
     
         [Parameter(Mandatory = $false)]
-        [string]$idxSrvDir = ""
+        [string]$logsPath = ""
     )
 
     Begin {
@@ -25,8 +25,7 @@ function Write-Log {
         $VerbosePreference = 'Continue'
         $DateReverse = Get-Date -Format yyyy.MM.dd
         $Week = Get-Date -UFormat %V  
-        $logDir = -join ($idxSrvDir, "logs\")
-        $logfile = -join ($logDir, "ACH-KW", $Week, ".log")
+        $logfile = -join ($logsPath, "ACH-KW", $Week, ".log")
 
     }
     Process {
@@ -54,7 +53,7 @@ function Write-Log {
             }
         }
     
-        if (![string]::IsNullOrEmpty($idxSrvDir)) {
+        if (![string]::IsNullOrEmpty($logsPath)) {
             # Write log entry to $Path
             "$FormattedDate $LevelText $Message" | Out-File -FilePath $logfile -Append
         }
