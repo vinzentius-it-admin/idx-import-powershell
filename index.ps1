@@ -108,7 +108,6 @@ else {
 
         if (-Not $found) {
             Write-Log "Kein Dokumententyp zuordenbar " warn $logsPath
-            Write-Log "Kein Dokumententyp zuordenbar $($pattern.key) " warn $logsPath
             Write-Log "Docs werden verschoben nach $manualpath und $backupPath" warn $logsPath
             Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
             $count_nothing += 1
