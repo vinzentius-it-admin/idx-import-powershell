@@ -256,6 +256,62 @@ else {
                     Write-Log "Geburtsdatum:     $GebDatum" info $logsPath
                 }
     
+                { 
+                    "Leistungsbescheid",
+                    "Zuzahlungsaufforderung"
+                } {
+                    # Fallnummer
+                    $fallPattern = @("Fall-Nr")
+                    $line = Select-String -Pattern $fallPattern $fileName
+                    $Matches = ""
+    
+                    if (-not ($line)) {
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $fileName" warn $logsPath
+                        Write-Log "$line" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
+                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Move-Item -Force $fileName $backupTxtPath 
+                        continue fileloop
+                    }
+    
+                    if ([string]$line -Match "Fall-Nr.\s*(\d{7}|\d{6})") {
+                        $Fallnr = $Matches[1]
+                        Write-Log "Fallnummer:       $Fallnr" info $logsPath
+                    }
+                    else {
+                        Write-Log "Konnte Fallnummer nicht extrahieren aus $fileName" warn $logsPath
+                        Write-Log "$line" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
+                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Move-Item -Force $fileName $backupTxtPath 
+                        continue fileloop
+                    }                
+
+                    # Name, Vorname
+                    $line = Select-String -Pattern "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*" $fileName
+                    if (-Not ([string]$line -Match "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)?\s*")) {
+                        Write-Log "Kein Treffer für Vorname und Name in $filename" warn $logsPath
+                        Write-Log "$line" warn $logsPath
+                        continue fileloop
+                    }
+
+                    if ($Matches[3]) {                # Drei Namen, 3. ist Nachname
+                        $Vorname = -join($Matches[1]," ",$Matches[2])
+                        $Nachname = $Matches[3]
+                    } else {
+                        $Vorname = $Matches[1]
+                        $Nachname = $Matches[2]
+                    }
+                    $GebDatum = "01.01.1970"
+
+                    Write-Log "Vorname:          $Vorname" info $logsPath
+                    Write-Log "Nachname:         $Nachname" info $logsPath
+                    Write-Log "Geburtsdatum:     $GebDatum" info $logsPath
+    
+                }
+    
                 default {
                     Write-Log "Seltener Fall. Weiter mit nächsten Datei..." warn $logsPath
                 }
