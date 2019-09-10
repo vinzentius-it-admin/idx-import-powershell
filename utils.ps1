@@ -48,7 +48,7 @@ function Write-Log {
                 $LevelText = 'WARNING: '
             }
             'Info' {
-                Write-Verbose "$Message"
+                Write-Host "$Message" -ForegroundColor Cyan
                 $LevelText = 'INFO:           '
             }
         }
