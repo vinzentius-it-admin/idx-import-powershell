@@ -1,5 +1,6 @@
-# matcht Doktype und gibt relevantes auf der Konsole aus; Verschieben von Dokumenten nur in den Manual - Path zur manuellen Bearbeitung
-# Schreiben an die Schnittstelle, wenn Argument -writeidx angegeben
+# Dieses Stapelverarbeitungsprogramm sucht nach Merkmalen und ordnet diese einem Ablageort (Dokumententyp) zu
+# Es verschiebt Dokumente nach "$manualPath" falls eine manuelle Bearbeitung nötig ist
+# Durch Ausführen mit dem Argument "-writeidx" wird jeweils eine IDX-Datei erstellt
 
 Param (
     [Parameter(Mandatory = $false)]
