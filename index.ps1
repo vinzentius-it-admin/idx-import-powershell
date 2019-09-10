@@ -83,10 +83,10 @@ else {
         $idxFile = -join ($idxPath, $idxFile)
         $okfile = -join ($idxPath, $okFile)
 
-        $fileName = -join ($txtPath, $txtFile)
+        $txtPathname = -join ($txtPath, $txtFile)
         $pdfFileName = -join ($pdfPath, $pdfFile)
 
-        if (-Not (Test-Path $fileName)) {
+        if (-Not (Test-Path $txtPathname)) {
             continue fileloop
         }
         if (-Not (Test-Path $pdfFileName)) {
@@ -95,7 +95,7 @@ else {
 
         foreach ($docType in $config.docTypes) {
             # check for docType
-            $finds = Select-String -Pattern $docType.pattern $fileName
+            $finds = Select-String -Pattern $docType.pattern $txtPathname
             if (-Not $found -and $finds.count -gt $docType.gt) {
                 $found = $true
                 $topic = $docType.topic
@@ -106,35 +106,41 @@ else {
 
         Write-Log " " info $logsPath
         Write-Log " " info $logsPath
-        Write-Log "Typ:              $topic " info $logsPath
-        Write-Log "PDF:              $file " info $logsPath
+
+        # Write-Host ($file | Format-Table | Out-String)
 
         if (-Not $found) {
+            Write-Log "Typ:              unbekannt " warn $logsPath
+            Write-Log "PDF:              $pdfFile " warn $logsPath
+            Write-Log "TXT:              $txtFile " warn $logsPath
             Write-Log "Kein Dokumententyp zuordenbar " warn $logsPath
             Write-Log "Docs werden verschoben nach $manualPath und $backupPath" warn $logsPath
             Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
             $count_nothing += 1
             continue fileloop
             #Move-Item -Force ${pdfPath}${pdfFile} $backupPath 
-            #Move-Item -Force $fileName $backupTxtPath
+            #Move-Item -Force $txtPathname $backupTxtPath
         }
         else {
-            
+            Write-Log "Typ:              $topic " info $logsPath
+            Write-Log "PDF:              $pdfFile " info $logsPath
+            Write-Log "TXT:              $txtFile " info $logsPath
+
             # write results out
             switch ( $topic ) {
                 Arztbrief {
                     # Fallnummer auf Aufkleber: 7-stellig [Leer] Datum [Leer] ACH
-                    $line = Select-String -pattern "^(\d{7}|\d{6})\s*\d{2}[.,]\d{2}[.,]\d{4}\s*ACH" $fileName
+                    $line = Select-String -pattern "^(\d{7}|\d{6})\s*\d{2}[.,]\d{2}[.,]\d{4}\s*ACH" $txtPathname
                     # Write-Host $line
                     $Matches = ""
     
                     if (-not ($line)) {
-                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $fileName" warn $logsPath
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
                         Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                         Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                        Move-Item -Force $fileName $backupTxtPath 
+                        Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
     
@@ -147,21 +153,21 @@ else {
                         Write-Log "Fallnummer:       $Fallnr" info $logsPath
                     }
                     else {
-                        Write-Log "Konnte Fallnummer nicht extrahieren aus $fileName" warn $logsPath
+                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
                         Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                         Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                        Move-Item -Force $fileName $backupTxtPath 
+                        Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
     
                     # Name
-                    # $line = Select-String -Pattern "\w*[,.]\s*\w*[.,]\s*ge[bh][.,]\s*\d{2}[.,]\d{2}[.,]\d{4}" $fileName
-                    $line = Select-String -Pattern "^\w*[,]\s*\w*" $fileName
+                    # $line = Select-String -Pattern "\w*[,.]\s*\w*[.,]\s*ge[bh][.,]\s*\d{2}[.,]\d{2}[.,]\d{4}" $txtPathname
+                    $line = Select-String -Pattern "^\w*[,]\s*\w*" $txtPathname
     
                     if (-Not ([string]$line -Match ":\d{1,2}:(\w*)[,]\s*(\w*)")) {
-                        Write-Log "Kein Treffer für Name, Vorname in $filename" warn $logsPath
+                        Write-Log "Kein Treffer für Name, Vorname in $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         continue fileloop
                     }
@@ -178,16 +184,16 @@ else {
                 Histologie {
                     # Fallnummer
                     $fallPattern = @("Fall-Nr", "Fallnummer")
-                    $line = Select-String -Pattern $fallPattern $fileName
+                    $line = Select-String -Pattern $fallPattern $txtPathname
                     $Matches = ""
     
                     if (-not ($line)) {
-                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $fileName" warn $logsPath
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
                         Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                         Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                        Move-Item -Force $fileName $backupTxtPath 
+                        Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
     
@@ -196,22 +202,22 @@ else {
                         Write-Log "Fallnummer:       $Fallnr" info $logsPath
                     }
                     else {
-                        Write-Log "Konnte Fallnummer nicht extrahieren aus $fileName" warn $logsPath
+                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
                         Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                         Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                        Move-Item -Force $fileName $backupTxtPath 
+                        Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }                
     
                     # Name Vorname
-                    $line = Select-String -Pattern "Patient.*ge"  $fileName
+                    $line = Select-String -Pattern "Patient.*ge"  $txtPathname
                     $Matches = ""
                     # Match auf Patient etc                      
                     # if (-Not ([string]$line -Match "Patient.*:\s*\w*(?:\s*\w*)?(?:[,.])?\s*(\w*)(?:[,.])?\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {
                     if (-Not ([string]$line -Match "Patient.*:.*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {                
-                        Write-Log "Keine Treffer für Name, Vorname in $filename" warn $logsPath
+                        Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         continue fileloop
                     }
@@ -247,7 +253,7 @@ else {
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
                         Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                         Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                        Move-Item -Force $fileName $backuptxtPath 
+                        Move-Item -Force $txtPathname $backuptxtPath 
                         continue fileloop  
                     } 
     
@@ -262,16 +268,16 @@ else {
                 } {
                     # Fallnummer
                     $fallPattern = @("Fall-Nr")
-                    $line = Select-String -Pattern $fallPattern $fileName
+                    $line = Select-String -Pattern $fallPattern $txtPathname
                     $Matches = ""
     
                     if (-not ($line)) {
-                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $fileName" warn $logsPath
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
                         Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                         Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                        Move-Item -Force $fileName $backupTxtPath 
+                        Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
     
@@ -280,19 +286,19 @@ else {
                         Write-Log "Fallnummer:       $Fallnr" info $logsPath
                     }
                     else {
-                        Write-Log "Konnte Fallnummer nicht extrahieren aus $fileName" warn $logsPath
+                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
                         Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
                         Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                        Move-Item -Force $fileName $backupTxtPath 
+                        Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }                
 
                     # Name, Vorname
-                    $line = Select-String -Pattern "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*" $fileName
+                    $line = Select-String -Pattern "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*" $txtPathname
                     if (-Not ([string]$line -Match "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)?\s*")) {
-                        Write-Log "Kein Treffer für Vorname und Name in $filename" warn $logsPath
+                        Write-Log "Kein Treffer für Vorname und Name in $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         continue fileloop
                     }
@@ -332,9 +338,9 @@ else {
     
                 Write-Log "Kopiere           $idxfile nach $okfile" info $logsPath
                 Copy-Item $idxfile $okfile
-                Write-Log "Verschiebe        ${pdfPath}${pdfFile} und $filename nach $backupPath " info $logsPath
+                Write-Log "Verschiebe        ${pdfPath}${pdfFile} und $txtPathname nach $backupPath " info $logsPath
                 #Move-Item -Force ${pdfPath}${pdfFile} $backupPath
-                #Move-Item -Force $fileName $backupTxtPath
+                #Move-Item -Force $txtPathname $backupTxtPath
             }
 
         }
