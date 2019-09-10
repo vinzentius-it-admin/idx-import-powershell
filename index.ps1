@@ -110,7 +110,7 @@ else {
         # Write-Host ($file | Format-Table | Out-String)
 
         if (-Not $found) {
-            Write-Log "Typ:              unbekannt " warn $logsPath
+            Write-Log "Typ:              UNBEKANNT " warn $logsPath
             Write-Log "PDF:              $pdfPathname " warn $logsPath
             Write-Log "TXT:              $txtPathname " warn $logsPath
             Write-Log "Kein Dokumententyp zuordenbar " warn $logsPath
