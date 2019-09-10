@@ -6,7 +6,7 @@ function Write-Log {
             ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [Alias("LogContent")]
-        [string]$Message,
+        [string]$Message = "",
 
         # [Parameter(Mandatory=$false)]
         # [Alias('LogPath')]
@@ -40,15 +40,15 @@ function Write-Log {
         # Write message to error, warning, or verbose pipeline and specify $LevelText
         switch ($Level) {
             'Error' {
-                Write-Error $Message
+                Write-Error "$Message"
                 $LevelText = 'ERROR:      '
             }
             'Warn' {
-                Write-Warning $Message
+                Write-Warning "$Message"
                 $LevelText = 'WARNING: '
             }
             'Info' {
-                Write-Verbose $Message
+                Write-Verbose "$Message"
                 $LevelText = 'INFO:           '
             }
         }
