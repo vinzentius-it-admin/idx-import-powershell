@@ -34,7 +34,6 @@ $txtPath = $config.txtPath               # Quelle TXT
 $backupTxtPath = $config.backupTxtPath
 $backupPdfPath = $config.backupPdfPath
 $manualPath = $config.manualPath
-$stampPath = $config.stampPath
 $logsPath = $config.logsPath
 $iterateThrough = $config.iterateThrough
 $pdfFileExtension = $config.pdfFileExtension

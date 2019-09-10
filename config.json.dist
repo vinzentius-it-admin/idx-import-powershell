@@ -6,7 +6,6 @@
     "backupTxtPath": "./data/backup-txt/",
     "backupPdfPath": "./data/backup-pdf/",
     "manualPath": "./data/manuell/",
-    "stampPath": "./data/stamp/",
     "logsPath": "./logs/",
     "iterateThrough": "pdf",
     "pdfFileExtension": ".pdf",

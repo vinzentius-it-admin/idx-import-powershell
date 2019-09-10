@@ -23,7 +23,6 @@ function Write-Log {
     Begin {
         # Set VerbosePreference to Continue so that verbose messages are displayed.
         $VerbosePreference = 'Continue'
-        $DateReverse = Get-Date -Format yyyy.MM.dd
         $Week = Get-Date -UFormat %V  
         $logfile = -join ($logsPath, "ACH-KW", $Week, ".log")
 
@@ -32,7 +31,6 @@ function Write-Log {
         # If attempting to write to a log file in a folder/path that doesn't exist create the file including the path.
         if (!(Test-Path $logfile)) {
             Write-Verbose "Erstelle Logdatei: $logfile."
-            $NewLogFile = New-Item $logfile -Force -ItemType File
         }
         # Format Date for our Log File
         $FormattedDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -130,16 +128,4 @@ function Write-IDXFile ($department, $Fallnr, $categories, $Nachname, $Vorname, 
 "@ -f $department, $Fallnr, $categories[0], $categories[1], $Nachname, $Vorname, $GebDatum, $Datum, $topic, $pdfFile
 
     $s | Out-File -Encoding "Windows-1252" -FilePath $idxFile
-}
-
-function Write-PDFStamped ($stampTool, $pdfPath, $pdfFile, $stampPDF, $stampedPDF) { 
-    $pdfCommand = -join ($stampTool, " ", $pdfPath, $pdfFile, " stamp ", $stampPDF, " output ", $stampedPDF)
-    # write-host $pdfCommand
-    Remove-Item $stampedPDF -Force -ErrorAction SilentlyContinue
-    Invoke-Expression $pdfCommand
-}
-
-function Encode-IDXFile ($idxFile) {
-    $content = Get-Content $idxFile
-    [System.IO.File]::WriteAllLines($idxFile, $content)
 }
