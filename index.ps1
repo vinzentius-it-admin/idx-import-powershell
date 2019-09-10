@@ -84,12 +84,12 @@ else {
         $okfile = -join ($idxPath, $okFile)
 
         $txtPathname = -join ($txtPath, $txtFile)
-        $pdfFileName = -join ($pdfPath, $pdfFile)
+        $pdfPathname = -join ($pdfPath, $pdfFile)
 
         if (-Not (Test-Path $txtPathname)) {
             continue fileloop
         }
-        if (-Not (Test-Path $pdfFileName)) {
+        if (-Not (Test-Path $pdfPathname)) {
             continue fileloop
         }
 
@@ -111,20 +111,20 @@ else {
 
         if (-Not $found) {
             Write-Log "Typ:              unbekannt " warn $logsPath
-            Write-Log "PDF:              $pdfFile " warn $logsPath
-            Write-Log "TXT:              $txtFile " warn $logsPath
+            Write-Log "PDF:              $pdfPathname " warn $logsPath
+            Write-Log "TXT:              $txtPathname " warn $logsPath
             Write-Log "Kein Dokumententyp zuordenbar " warn $logsPath
             Write-Log "Docs werden verschoben nach $manualPath und $backupPath" warn $logsPath
-            Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
+            Copy-Item -Force $pdfPathname $manualPath
             $count_nothing += 1
             continue fileloop
-            #Move-Item -Force ${pdfPath}${pdfFile} $backupPath 
+            #Move-Item -Force $pdfPathname $backupPath 
             #Move-Item -Force $txtPathname $backupTxtPath
         }
         else {
             Write-Log "Typ:              $topic " info $logsPath
-            Write-Log "PDF:              $pdfFile " info $logsPath
-            Write-Log "TXT:              $txtFile " info $logsPath
+            Write-Log "PDF:              $pdfPathname " info $logsPath
+            Write-Log "TXT:              $txtPathname " info $logsPath
 
             # write results out
             switch ( $topic ) {
@@ -138,8 +138,8 @@ else {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
-                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
-                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Copy-Item -Force $pdfPathname $manualPath
+                        Move-Item -Force $pdfPathname $backupPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -156,8 +156,8 @@ else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
-                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
-                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Copy-Item -Force $pdfPathname $manualPath
+                        Move-Item -Force $pdfPathname $backupPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -191,8 +191,8 @@ else {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
-                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
-                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Copy-Item -Force $pdfPathname $manualPath
+                        Move-Item -Force $pdfPathname $backupPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -205,8 +205,8 @@ else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
-                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
-                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Copy-Item -Force $pdfPathname $manualPath
+                        Move-Item -Force $pdfPathname $backupPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }                
@@ -251,8 +251,8 @@ else {
                     }
                     else {
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
-                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
-                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Copy-Item -Force $pdfPathname $manualPath
+                        Move-Item -Force $pdfPathname $backupPath
                         Move-Item -Force $txtPathname $backuptxtPath 
                         continue fileloop  
                     } 
@@ -275,8 +275,8 @@ else {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
-                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
-                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Copy-Item -Force $pdfPathname $manualPath
+                        Move-Item -Force $pdfPathname $backupPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -289,8 +289,8 @@ else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
                         Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
-                        Copy-Item -Force ${pdfPath}${pdfFile} $manualPath
-                        Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                        Copy-Item -Force $pdfPathname $manualPath
+                        Move-Item -Force $pdfPathname $backupPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }                
@@ -338,8 +338,8 @@ else {
     
                 Write-Log "Kopiere           $idxfile nach $okfile" info $logsPath
                 Copy-Item $idxfile $okfile
-                Write-Log "Verschiebe        ${pdfPath}${pdfFile} und $txtPathname nach $backupPath " info $logsPath
-                #Move-Item -Force ${pdfPath}${pdfFile} $backupPath
+                Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPath " info $logsPath
+                #Move-Item -Force $pdfPathname $backupPath
                 #Move-Item -Force $txtPathname $backupTxtPath
             }
 
