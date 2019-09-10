@@ -303,7 +303,8 @@ else {
                         continue fileloop
                     }
 
-                    if ($Matches[3]) {                # Drei Namen, 3. ist Nachname
+                    # Drei Namen, 3. ist Nachname
+                    if ($Matches[3] -and $Matches[3] -ne "Fall-Nr") {
                         $Vorname = -join($Matches[1]," ",$Matches[2])
                         $Nachname = $Matches[3]
                     } else {
