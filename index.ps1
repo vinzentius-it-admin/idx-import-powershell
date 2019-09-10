@@ -147,8 +147,8 @@ else {
             Copy-Item -Force $pdfPathname $manualPath
             $count_nothing += 1
             continue fileloop
-            #Move-Item -Force $pdfPathname $backupPdfPath 
-            #Move-Item -Force $txtPathname $backupTxtPath
+            Move-Item -Force $pdfPathname $backupPdfPath 
+            Move-Item -Force $txtPathname $backupTxtPath
         }
         else {
             Write-Log "Typ:              $topic " info $logsPath
@@ -370,8 +370,8 @@ else {
                 Write-Log "Kopiere           $idxfile nach $okfile" info $logsPath
                 Copy-Item $idxfile $okfile
                 Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPdfPath " info $logsPath
-                #Move-Item -Force $pdfPathname $backupPdfPath
-                #Move-Item -Force $txtPathname $backupTxtPath
+                Move-Item -Force $pdfPathname $backupPdfPath
+                Move-Item -Force $txtPathname $backupTxtPath
             }
 
         }
