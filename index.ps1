@@ -32,7 +32,7 @@ $idxPath = $config.idxPath
 $pdfPath = $config.pdfPath               # Quelle PDF
 $txtPath = $config.txtPath               # Quelle TXT
 $backupTxtPath = $config.backupTxtPath
-$backupPath = $config.backupPath
+$backupPdfPath = $config.backupPdfPath
 $manualPath = $config.manualPath
 $stampPath = $config.stampPath
 $logsPath = $config.logsPath
@@ -143,11 +143,11 @@ else {
             Write-Log "PDF:              $pdfPathname " warn $logsPath
             Write-Log "TXT:              $txtPathname " warn $logsPath
             Write-Log "Kein Dokumententyp zuordenbar " warn $logsPath
-            Write-Log "Docs werden verschoben nach $manualPath und $backupPath" warn $logsPath
+            Write-Log "Docs werden verschoben nach $manualPath und $backupPdfPath" warn $logsPath
             Copy-Item -Force $pdfPathname $manualPath
             $count_nothing += 1
             continue fileloop
-            #Move-Item -Force $pdfPathname $backupPath 
+            #Move-Item -Force $pdfPathname $backupPdfPath 
             #Move-Item -Force $txtPathname $backupTxtPath
         }
         else {
@@ -166,9 +166,9 @@ else {
                     if (-not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPdfPath" warn $logsPath
                         Copy-Item -Force $pdfPathname $manualPath
-                        Move-Item -Force $pdfPathname $backupPath
+                        Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -184,9 +184,9 @@ else {
                     else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPdfPath" warn $logsPath
                         Copy-Item -Force $pdfPathname $manualPath
-                        Move-Item -Force $pdfPathname $backupPath
+                        Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -219,9 +219,9 @@ else {
                     if (-not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPdfPath" warn $logsPath
                         Copy-Item -Force $pdfPathname $manualPath
-                        Move-Item -Force $pdfPathname $backupPath
+                        Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -233,9 +233,9 @@ else {
                     else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPdfPath" warn $logsPath
                         Copy-Item -Force $pdfPathname $manualPath
-                        Move-Item -Force $pdfPathname $backupPath
+                        Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }                
@@ -279,9 +279,9 @@ else {
     
                     }
                     else {
-                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPdfPath" warn $logsPath
                         Copy-Item -Force $pdfPathname $manualPath
-                        Move-Item -Force $pdfPathname $backupPath
+                        Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backuptxtPath 
                         continue fileloop  
                     } 
@@ -303,9 +303,9 @@ else {
                     if (-not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPdfPath" warn $logsPath
                         Copy-Item -Force $pdfPathname $manualPath
-                        Move-Item -Force $pdfPathname $backupPath
+                        Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }
@@ -317,9 +317,9 @@ else {
                     else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
                         Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $manualPath und $backupPdfPath" warn $logsPath
                         Copy-Item -Force $pdfPathname $manualPath
-                        Move-Item -Force $pdfPathname $backupPath
+                        Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
                         continue fileloop
                     }                
@@ -369,8 +369,8 @@ else {
     
                 Write-Log "Kopiere           $idxfile nach $okfile" info $logsPath
                 Copy-Item $idxfile $okfile
-                Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPath " info $logsPath
-                #Move-Item -Force $pdfPathname $backupPath
+                Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPdfPath " info $logsPath
+                #Move-Item -Force $pdfPathname $backupPdfPath
                 #Move-Item -Force $txtPathname $backupTxtPath
             }
 

@@ -4,7 +4,7 @@
     "pdfPath": "./data/pdf/",
     "txtPath": "./data/txt/",
     "backupTxtPath": "./data/backup-txt/",
-    "backupPath": "./data/backup-pdf/",
+    "backupPdfPath": "./data/backup-pdf/",
     "manualPath": "./data/manuell/",
     "stampPath": "./data/stamp/",
     "logsPath": "./logs/",
