@@ -7,6 +7,10 @@ Param (
     [switch]$writeidx
 )
 
+# load helper functions
+. ./utils.ps1
+
+# load config file
 $configFilePath = "config.json"
 $configDistFilePath = "config.json.dist"
 $checkFile = Test-Path $configFilePath
@@ -15,9 +19,14 @@ if (-not $checkFile) {
     exit 0
 }
 
-$config = Get-Content -Raw -Path $configFilePath | ConvertFrom-Json
+# variables
+$files = @()
+$count_nothing = 0
+$Datum = Get-Date -Format dd.MM.yyyy
+$inputPath = ""
 
-# Problem: ggf falsche/keine Fallnummer
+# parse config file
+$config = Get-Content -Raw -Path $configFilePath | ConvertFrom-Json
 $department = $config.department
 $idxPath = $config.idxPath
 $pdfPath = $config.pdfPath               # Quelle PDF
@@ -27,18 +36,30 @@ $backupPath = $config.backupPath
 $manualPath = $config.manualPath
 $stampPath = $config.stampPath
 $logsPath = $config.logsPath
+$iterateThrough = $config.iterateThrough
+$pdfFileExtension = $config.pdfFileExtension
+$idxFileExtension = $config.idxFileExtension
+$txtFileExtension = $config.txtFileExtension
+$okfileExtension = $config.okfileExtension
 
-$files = Get-ChildItem $pdfPath -Filter *.pdf
+# validation of config parameters
+if (
+    [string]::IsNullOrEmpty($iterateThrough) -or
+    ($iterateThrough -ne "pdf" -and $iterateThrough -ne "txt")
+) {
+    Write-Log "Kein (valides) Quellverzeichnis angegeben" warn
+    exit 0
+}
 
-# $Datum = Get-Date -Format yyyy.MM.dd
-# $logfile = -join($Datum,".log")
-$Datum = Get-Date -Format dd.MM.yyyy
-
-# load helper functions
-. ./utils.ps1
-
-# counter for non-assignable cases
-$count_nothing = 0
+# fetch files
+if ($iterateThrough -eq "pdf") {
+    $files = Get-ChildItem $pdfPath -Filter "*.$iterateThrough"
+    $inputPath = $pdfPath
+}
+elseif ($iterateThrough -eq "txt") {
+    $files = Get-ChildItem $txtPath -Filter "*.$iterateThrough"
+    $inputPath = $txtPath
+}
 
 Clear-Host
 Write-Host
@@ -46,15 +67,22 @@ Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 Write-Host
 Write-Host "  LOGGING NACH              $logsPath                  "
 Write-Host
+Write-Host "  INPUT-DATEIEN VON         $inputPath                 "
+Write-Host
 Write-Host "  IDX-DATEIEN NACH          $idxPath                   "
 Write-Host
-Write-Host "  SCHREIBEN MIT PARAMETER   -writeidx                  "
+Write-Host "  SCHREIBEN ÜBER PARAMETER  -writeidx        "
 Write-Host
 Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 Write-Host
 
 if (-not $files) {
-    Write-Log "Keine PDF Files in $pdfPath" warn
+    if ($iterateThrough -eq "pdf") {
+        Write-Log "Keine $($iterateThrough.ToUpper())-Dateien in $pdfPath" warn
+    }
+    elseif ($iterateThrough -eq "txt") {
+        Write-Log "Keine $($iterateThrough.ToUpper())-Dateien in $txtPath" warn
+    }
     exit 0
 }
 else {
@@ -67,18 +95,20 @@ else {
         $Matches = ""
         $line = ""
         $Fallnr = ""
-        $Name = ""
         $Vorname = ""
         $GebDatum = ""
-        $count = ""
-        $now = Get-Date -format "dd.MM.yyyy hh.mm.ss"
 
-        $baseName = $file.name -replace ".pdf", ""
+        if ($iterateThrough -eq "pdf") {
+            $baseName = $file.name -replace $pdfFileExtension, ""
+        }
+        elseif ($iterateThrough -eq "txt") {
+            $baseName = $file.name -replace $txtFileExtension, ""
+        }
 
-        $pdfFile = -join ($baseName, ".pdf")
-        $idxFile = -join ($baseName, ".idx")
-        $txtFile = -join ($baseName, ".txt")
-        $okfile = -join ($baseName, ".ok")
+        $pdfFile = -join ($baseName, $pdfFileExtension)
+        $idxFile = -join ($baseName, $idxFileExtension)
+        $txtFile = -join ($baseName, $txtFileExtension)
+        $okfile = -join ($baseName, $okfileExtension)
 
         $idxFile = -join ($idxPath, $idxFile)
         $okfile = -join ($idxPath, $okFile)
@@ -100,7 +130,6 @@ else {
                 $found = $true
                 $topic = $docType.topic
                 $categories = $docType.category
-                $count = $finds.count
             }
         }
 
@@ -305,9 +334,10 @@ else {
 
                     # Drei Namen, 3. ist Nachname
                     if ($Matches[3] -and $Matches[3] -ne "Fall-Nr") {
-                        $Vorname = -join($Matches[1]," ",$Matches[2])
+                        $Vorname = -join ($Matches[1], " ", $Matches[2])
                         $Nachname = $Matches[3]
-                    } else {
+                    }
+                    else {
                         $Vorname = $Matches[1]
                         $Nachname = $Matches[2]
                     }

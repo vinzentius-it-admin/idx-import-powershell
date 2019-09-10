@@ -8,6 +8,11 @@
     "manualPath": "./data/manuell/",
     "stampPath": "./data/stamp/",
     "logsPath": "./logs/",
+    "iterateThrough": "pdf",
+    "pdfFileExtension": ".pdf",
+    "idxFileExtension": ".idx",
+    "txtFileExtension": ".txt",
+    "okfileExtension": ".ok",
     "docTypes": [
         {
             topic: "docType_01",
