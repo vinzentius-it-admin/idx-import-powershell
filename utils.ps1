@@ -62,7 +62,7 @@ function Write-Log {
     }
 }
 
-function Write-IDXFile ($department, $Fallnr, $DokType, $Nachname, $Vorname, $GebDatum, $Datum, $idxFile, $idxPath, $pdfFile, $pdfPath) {
+function Write-IDXFile ($department, $Fallnr, $categories, $Nachname, $Vorname, $GebDatum, $Datum, $idxFile, $idxPath, $topic, $pdfFile, $pdfPath) {
     # Remove-Item ${idxpath}${pdffile} -Force -ErrorAction SilentlyContinue
     Copy-Item ${pdfpath}${pdffile} ${idxpath}   
 
@@ -127,7 +127,7 @@ function Write-IDXFile ($department, $Fallnr, $DokType, $Nachname, $Vorname, $Ge
 {9}
 </img>
 </Patientenakte>
-"@ -f $department, $Fallnr, $DocType[0], $DocType[1], $Nachname, $Vorname, $GebDatum, $Datum, $DocType[2], $pdfFile
+"@ -f $department, $Fallnr, $categories[0], $categories[1], $Nachname, $Vorname, $GebDatum, $Datum, $topic, $pdfFile
 
     $s | Out-File -Encoding "Windows-1252" -FilePath $idxFile
 }
