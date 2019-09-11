@@ -6,6 +6,10 @@ Param (
     [Parameter(Mandatory = $false)]
     [switch]$writeidx
 )
+Param (
+    [Parameter(Mandatory = $false)]
+    [switch]$moveFiles = $true
+)
 
 # load helper functions
 . ./utils.ps1
@@ -145,9 +149,11 @@ else {
             Write-Log "Docs werden verschoben nach $byHandPath und $backupPdfPath" warn $logPath
             Copy-Item -Force $pdfPathname $byHandPath
             $count_nothing += 1
+            if ($moveFiles) {
+                Move-Item -Force $pdfPathname $backupPdfPath 
+                Move-Item -Force $txtPathname $backupTxtPath
+            }
             continue fileloop
-            Move-Item -Force $pdfPathname $backupPdfPath 
-            Move-Item -Force $txtPathname $backupTxtPath
         }
         else {
             Write-Log "Typ:              $topic " info $logPath
@@ -167,8 +173,10 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        Move-Item -Force $pdfPathname $backupPdfPath
-                        Move-Item -Force $txtPathname $backupTxtPath 
+                        if ($moveFiles) {
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }
     
@@ -185,8 +193,10 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        Move-Item -Force $pdfPathname $backupPdfPath
-                        Move-Item -Force $txtPathname $backupTxtPath 
+                        if ($moveFiles) {
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }
     
@@ -220,8 +230,10 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        Move-Item -Force $pdfPathname $backupPdfPath
-                        Move-Item -Force $txtPathname $backupTxtPath 
+                        if ($moveFiles) {
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }
     
@@ -234,8 +246,10 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        Move-Item -Force $pdfPathname $backupPdfPath
-                        Move-Item -Force $txtPathname $backupTxtPath 
+                        if ($moveFiles) {
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }                
     
@@ -280,8 +294,10 @@ else {
                     else {
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        Move-Item -Force $pdfPathname $backupPdfPath
-                        Move-Item -Force $txtPathname $backuptxtPath 
+                        if ($moveFiles) {
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop  
                     } 
     
@@ -304,8 +320,10 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        Move-Item -Force $pdfPathname $backupPdfPath
-                        Move-Item -Force $txtPathname $backupTxtPath 
+                        if ($moveFiles) {
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }
     
@@ -318,8 +336,10 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        Move-Item -Force $pdfPathname $backupPdfPath
-                        Move-Item -Force $txtPathname $backupTxtPath 
+                        if ($moveFiles) {
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }                
 
@@ -369,8 +389,10 @@ else {
                 Write-Log "Kopiere           $idxfile nach $okfile" info $logPath
                 Copy-Item $idxfile $okfile
                 Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPdfPath " info $logPath
-                Move-Item -Force $pdfPathname $backupPdfPath
-                Move-Item -Force $txtPathname $backupTxtPath
+                if ($moveFiles) {
+                    Move-Item -Force $pdfPathname $backupPdfPath 
+                    Move-Item -Force $txtPathname $backupTxtPath
+                }
             }
 
         }
