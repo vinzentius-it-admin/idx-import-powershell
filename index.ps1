@@ -139,8 +139,6 @@ else {
         Write-Log " " info $logPath
         Write-Log " " info $logPath
 
-        # Write-Host ($file | Format-Table | Out-String)
-
         if (-Not $found) {
             Write-Log "Typ:              UNBEKANNT " warn $logPath
             Write-Log "PDF:              $pdfPathname " warn $logPath
