@@ -10,21 +10,21 @@ function Write-Log {
 
         # [Parameter(Mandatory=$false)]
         # [Alias('LogPath')]
-        # [string]$Path='M:\IDXSRV\logs\default.log',
+        # [string]$Path='M:\IDXSRV\log\default.log',
     
         [Parameter(Mandatory = $false)]
         [ValidateSet("Error", "Warn", "Info")]
         [string]$Level = "Info",
     
         [Parameter(Mandatory = $false)]
-        [string]$logsPath = ""
+        [string]$logPath = ""
     )
 
     Begin {
         # Set VerbosePreference to Continue so that verbose messages are displayed.
         $VerbosePreference = 'Continue'
         $Week = Get-Date -UFormat %V  
-        $logfile = -join ($logsPath, "ACH-KW", $Week, ".log")
+        $logfile = -join ($logPath, "ACH-KW", $Week, ".log")
 
     }
     Process {
@@ -51,7 +51,7 @@ function Write-Log {
             }
         }
     
-        if (![string]::IsNullOrEmpty($logsPath)) {
+        if (![string]::IsNullOrEmpty($logPath)) {
             # Write log entry to $Path
             "$FormattedDate $LevelText $Message" | Out-File -FilePath $logfile -Append
         }

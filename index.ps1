@@ -34,7 +34,7 @@ $txtPath = $config.txtPath               # Quelle TXT
 $backupTxtPath = $config.backupTxtPath
 $backupPdfPath = $config.backupPdfPath
 $byHandPath = $config.byHandPath
-$logsPath = $config.logsPath
+$logPath = $config.logPath
 $iterateThrough = $config.iterateThrough
 $pdfFileExtension = $config.pdfFileExtension
 $idxFileExtension = $config.idxFileExtension
@@ -64,7 +64,7 @@ Clear-Host
 Write-Host
 Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 Write-Host
-Write-Host "  LOGGING NACH              $logsPath                  "
+Write-Host "  LOGGING NACH              $logPath                  "
 Write-Host
 Write-Host "  INPUT-DATEIEN VON         $inputPath                 "
 Write-Host
@@ -132,17 +132,17 @@ else {
             }
         }
 
-        Write-Log " " info $logsPath
-        Write-Log " " info $logsPath
+        Write-Log " " info $logPath
+        Write-Log " " info $logPath
 
         # Write-Host ($file | Format-Table | Out-String)
 
         if (-Not $found) {
-            Write-Log "Typ:              UNBEKANNT " warn $logsPath
-            Write-Log "PDF:              $pdfPathname " warn $logsPath
-            Write-Log "TXT:              $txtPathname " warn $logsPath
-            Write-Log "Kein Dokumententyp zuordenbar " warn $logsPath
-            Write-Log "Docs werden verschoben nach $byHandPath und $backupPdfPath" warn $logsPath
+            Write-Log "Typ:              UNBEKANNT " warn $logPath
+            Write-Log "PDF:              $pdfPathname " warn $logPath
+            Write-Log "TXT:              $txtPathname " warn $logPath
+            Write-Log "Kein Dokumententyp zuordenbar " warn $logPath
+            Write-Log "Docs werden verschoben nach $byHandPath und $backupPdfPath" warn $logPath
             Copy-Item -Force $pdfPathname $byHandPath
             $count_nothing += 1
             continue fileloop
@@ -150,9 +150,9 @@ else {
             Move-Item -Force $txtPathname $backupTxtPath
         }
         else {
-            Write-Log "Typ:              $topic " info $logsPath
-            Write-Log "PDF:              $pdfPathname " info $logsPath
-            Write-Log "TXT:              $txtPathname " info $logsPath
+            Write-Log "Typ:              $topic " info $logPath
+            Write-Log "PDF:              $pdfPathname " info $logPath
+            Write-Log "TXT:              $txtPathname " info $logPath
 
             # write results out
             switch ( $topic ) {
@@ -163,9 +163,9 @@ else {
                     $Matches = ""
     
                     if (-not ($line)) {
-                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logsPath
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
+                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
                         Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
@@ -178,12 +178,12 @@ else {
                         # $decide = $Fallnr.Substring(3,1)
                         # if ($decide -eq "0") { $Fallnr = $Fallnr.substring(4,6) }
                         # else { $Fallnr = $Fallnr.Substring(3,7) }
-                        Write-Log "Fallnummer:       $Fallnr" info $logsPath
+                        Write-Log "Fallnummer:       $Fallnr" info $logPath
                     }
                     else {
-                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logsPath
+                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
+                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
                         Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
@@ -195,17 +195,17 @@ else {
                     $line = Select-String -Pattern "^\w*[,]\s*\w*" $txtPathname
     
                     if (-Not ([string]$line -Match ":\d{1,2}:(\w*)[,]\s*(\w*)")) {
-                        Write-Log "Kein Treffer für Name, Vorname in $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
+                        Write-Log "Kein Treffer für Name, Vorname in $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
                         continue fileloop
                     }
     
                     $Vorname = $Matches[2]
                     $Nachname = $Matches[1]
                     $GebDatum = "01.01.1970"
-                    Write-Log "Vorname:          $Vorname" info $logsPath
-                    Write-Log "Nachname:         $Nachname" info $logsPath
-                    Write-Log "Geburtsdatum:     $GebDatum" info $logsPath
+                    Write-Log "Vorname:          $Vorname" info $logPath
+                    Write-Log "Nachname:         $Nachname" info $logPath
+                    Write-Log "Geburtsdatum:     $GebDatum" info $logPath
     
                 }
     
@@ -216,9 +216,9 @@ else {
                     $Matches = ""
     
                     if (-not ($line)) {
-                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logsPath
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
+                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
                         Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
@@ -227,12 +227,12 @@ else {
     
                     if ([string]$line -Match "Fall-Nr.:\s*(\d{7}|\d{6})") {
                         $Fallnr = $Matches[1]
-                        Write-Log "Fallnummer:       $Fallnr" info $logsPath
+                        Write-Log "Fallnummer:       $Fallnr" info $logPath
                     }
                     else {
-                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logsPath
+                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
+                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
                         Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
@@ -245,8 +245,8 @@ else {
                     # Match auf Patient etc                      
                     # if (-Not ([string]$line -Match "Patient.*:\s*\w*(?:\s*\w*)?(?:[,.])?\s*(\w*)(?:[,.])?\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {
                     if (-Not ([string]$line -Match "Patient.*:.*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {                
-                        Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
+                        Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
                         continue fileloop
                     }
         
@@ -278,16 +278,16 @@ else {
     
                     }
                     else {
-                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logsPath
+                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
                         Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backuptxtPath 
                         continue fileloop  
                     } 
     
-                    Write-Log "Vorname:          $Vorname" info $logsPath
-                    Write-Log "Nachname:         $Nachname" info $logsPath
-                    Write-Log "Geburtsdatum:     $GebDatum" info $logsPath
+                    Write-Log "Vorname:          $Vorname" info $logPath
+                    Write-Log "Nachname:         $Nachname" info $logPath
+                    Write-Log "Geburtsdatum:     $GebDatum" info $logPath
                 }
     
                 { 
@@ -300,9 +300,9 @@ else {
                     $Matches = ""
     
                     if (-not ($line)) {
-                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logsPath
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
+                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
                         Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
@@ -311,12 +311,12 @@ else {
     
                     if ([string]$line -Match "Fall-Nr.\s*(\d{7}|\d{6})") {
                         $Fallnr = $Matches[1]
-                        Write-Log "Fallnummer:       $Fallnr" info $logsPath
+                        Write-Log "Fallnummer:       $Fallnr" info $logPath
                     }
                     else {
-                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
-                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logsPath
+                        Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
+                        Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
                         Move-Item -Force $pdfPathname $backupPdfPath
                         Move-Item -Force $txtPathname $backupTxtPath 
@@ -326,8 +326,8 @@ else {
                     # Name, Vorname
                     $line = Select-String -Pattern "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*" $txtPathname
                     if (-Not ([string]$line -Match "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)?\s*")) {
-                        Write-Log "Kein Treffer für Vorname und Name in $txtPathname" warn $logsPath
-                        Write-Log "$line" warn $logsPath
+                        Write-Log "Kein Treffer für Vorname und Name in $txtPathname" warn $logPath
+                        Write-Log "$line" warn $logPath
                         continue fileloop
                     }
 
@@ -342,14 +342,14 @@ else {
                     }
                     $GebDatum = "01.01.1970"
 
-                    Write-Log "Vorname:          $Vorname" info $logsPath
-                    Write-Log "Nachname:         $Nachname" info $logsPath
-                    Write-Log "Geburtsdatum:     $GebDatum" info $logsPath
+                    Write-Log "Vorname:          $Vorname" info $logPath
+                    Write-Log "Nachname:         $Nachname" info $logPath
+                    Write-Log "Geburtsdatum:     $GebDatum" info $logPath
     
                 }
     
                 default {
-                    Write-Log "Seltener Fall. Weiter mit nächsten Datei..." warn $logsPath
+                    Write-Log "Seltener Fall. Weiter mit nächsten Datei..." warn $logPath
                 }
     
             }
@@ -360,15 +360,15 @@ else {
                     Write-IDXFile $department $Fallnr $categories $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $topic $pdfFile $pdfPath
                 }
                 catch {
-                    Write-Log "Problem mit dem Schreiben von $idxfile" error $logsPath
-                    Write-Log "Parameter: $department $Fallnr $categories $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $topic $pdfFile $pdfPath" error $logsPath
-                    Write-Log "Dateien bleiben unberührt; Vorgang abgebrochen" error $logsPath
+                    Write-Log "Problem mit dem Schreiben von $idxfile" error $logPath
+                    Write-Log "Parameter: $department $Fallnr $categories $Nachname $Vorname $GebDatum $Datum $idxfile $idxPath $topic $pdfFile $pdfPath" error $logPath
+                    Write-Log "Dateien bleiben unberührt; Vorgang abgebrochen" error $logPath
                     break fileloop
                 }
     
-                Write-Log "Kopiere           $idxfile nach $okfile" info $logsPath
+                Write-Log "Kopiere           $idxfile nach $okfile" info $logPath
                 Copy-Item $idxfile $okfile
-                Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPdfPath " info $logsPath
+                Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPdfPath " info $logPath
                 Move-Item -Force $pdfPathname $backupPdfPath
                 Move-Item -Force $txtPathname $backupTxtPath
             }
@@ -376,7 +376,7 @@ else {
         }
     }
 
-    Write-Log " " info $logsPath
-    Write-Log " " info $logsPath
-    Write-Log "Unzugeordnet:     $count_nothing " info $logsPath
+    Write-Log " " info $logPath
+    Write-Log " " info $logPath
+    Write-Log "Unzugeordnet:     $count_nothing " info $logPath
 }
