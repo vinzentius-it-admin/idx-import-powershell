@@ -8,7 +8,7 @@ Param (
 )
 Param (
     [Parameter(Mandatory = $false)]
-    [switch]$moveFiles = $true
+    [switch]$debug
 )
 
 # load helper functions
@@ -74,7 +74,9 @@ Write-Host "  INPUT-DATEIEN VON         $inputPath                 "
 Write-Host
 Write-Host "  IDX-DATEIEN NACH          $idxPath                   "
 Write-Host
-Write-Host "  SCHREIBEN ÜBER PARAMETER  -writeidx        "
+Write-Host "  SCHREIBEN ÜBER PARAMETER                 -writeidx   "
+Write-Host
+Write-Host "  DEBUG MODUS (DATEIEN NICHT VERSCHIEBEN)  -debug      "
 Write-Host
 Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 Write-Host
@@ -147,7 +149,7 @@ else {
             Write-Log "Docs werden verschoben nach $byHandPath und $backupPdfPath" warn $logPath
             Copy-Item -Force $pdfPathname $byHandPath
             $count_nothing += 1
-            if ($moveFiles) {
+            if (-Not $debug) {
                 Move-Item -Force $pdfPathname $backupPdfPath 
                 Move-Item -Force $txtPathname $backupTxtPath
             }
@@ -171,7 +173,7 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        if ($moveFiles) {
+                        if (-Not $debug) {
                             Move-Item -Force $pdfPathname $backupPdfPath 
                             Move-Item -Force $txtPathname $backupTxtPath
                         }
@@ -191,7 +193,7 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        if ($moveFiles) {
+                        if (-Not $debug) {
                             Move-Item -Force $pdfPathname $backupPdfPath 
                             Move-Item -Force $txtPathname $backupTxtPath
                         }
@@ -228,7 +230,7 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        if ($moveFiles) {
+                        if (-Not $debug) {
                             Move-Item -Force $pdfPathname $backupPdfPath 
                             Move-Item -Force $txtPathname $backupTxtPath
                         }
@@ -244,7 +246,7 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        if ($moveFiles) {
+                        if (-Not $debug) {
                             Move-Item -Force $pdfPathname $backupPdfPath 
                             Move-Item -Force $txtPathname $backupTxtPath
                         }
@@ -292,7 +294,7 @@ else {
                     else {
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        if ($moveFiles) {
+                        if (-Not $debug) {
                             Move-Item -Force $pdfPathname $backupPdfPath 
                             Move-Item -Force $txtPathname $backupTxtPath
                         }
@@ -318,7 +320,7 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        if ($moveFiles) {
+                        if (-Not $debug) {
                             Move-Item -Force $pdfPathname $backupPdfPath 
                             Move-Item -Force $txtPathname $backupTxtPath
                         }
@@ -334,7 +336,7 @@ else {
                         Write-Log "$line" warn $logPath
                         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPath
                         Copy-Item -Force $pdfPathname $byHandPath
-                        if ($moveFiles) {
+                        if (-Not $debug) {
                             Move-Item -Force $pdfPathname $backupPdfPath 
                             Move-Item -Force $txtPathname $backupTxtPath
                         }
@@ -387,7 +389,7 @@ else {
                 Write-Log "Kopiere           $idxfile nach $okfile" info $logPath
                 Copy-Item $idxfile $okfile
                 Write-Log "Verschiebe        $pdfPathname und $txtPathname nach $backupPdfPath " info $logPath
-                if ($moveFiles) {
+                if (-Not $debug) {
                     Move-Item -Force $pdfPathname $backupPdfPath 
                     Move-Item -Force $txtPathname $backupTxtPath
                 }
