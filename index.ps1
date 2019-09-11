@@ -44,19 +44,19 @@ $okfileExtension = $config.okfileExtension
 # validation of config parameters
 if (
     [string]::IsNullOrEmpty($iterateThrough) -or
-    ($iterateThrough -ne "pdf" -and $iterateThrough -ne "txt")
+    ($iterateThrough -like '*pdf*' -and $iterateThrough -like '*txt*')
 ) {
     Write-Log "Kein (valides) Quellverzeichnis angegeben" warn
     exit 0
 }
 
 # fetch files
-if ($iterateThrough -eq "pdf") {
-    $files = Get-ChildItem $pdfPath -Filter "*.$iterateThrough"
+if ($iterateThrough -like '*pdf*') {
+    $files = Get-ChildItem $pdfPath -Filter $iterateThrough
     $inputPath = $pdfPath
 }
-elseif ($iterateThrough -eq "txt") {
-    $files = Get-ChildItem $txtPath -Filter "*.$iterateThrough"
+elseif ($iterateThrough -like '*txt*') {
+    $files = Get-ChildItem $txtPath -Filter $iterateThrough
     $inputPath = $txtPath
 }
 
@@ -78,11 +78,11 @@ Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 Write-Host
 
 if (-Not $files) {
-    if ($iterateThrough -eq "pdf") {
-        Write-Log "Keine $($iterateThrough.ToUpper())-Dateien in $pdfPath" warn
+    if ($iterateThrough -like '*pdf*') {
+        Write-Log "Keine PDF-Dateien in $pdfPath" warn
     }
-    elseif ($iterateThrough -eq "txt") {
-        Write-Log "Keine $($iterateThrough.ToUpper())-Dateien in $txtPath" warn
+    elseif ($iterateThrough -like '*txt*') {
+        Write-Log "Keine TXT-Dateien in $txtPath" warn
     }
     exit 0
 }
@@ -99,10 +99,10 @@ else {
         $Vorname = ""
         $GebDatum = ""
 
-        if ($iterateThrough -eq "pdf") {
+        if ($iterateThrough -like '*pdf*') {
             $baseName = $file.name -replace $pdfFileExtension, ""
         }
-        elseif ($iterateThrough -eq "txt") {
+        elseif ($iterateThrough -like '*txt*') {
             $baseName = $file.name -replace $txtFileExtension, ""
         }
 
