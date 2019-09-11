@@ -8,10 +8,6 @@ function Write-Log {
         [Alias("LogContent")]
         [string]$Message = "",
 
-        # [Parameter(Mandatory=$false)]
-        # [Alias('LogPath')]
-        # [string]$Path='M:\IDXSRV\log\default.log',
-    
         [Parameter(Mandatory = $false)]
         [ValidateSet("Error", "Warn", "Info")]
         [string]$Level = "Info",
