@@ -14,7 +14,7 @@ Param (
 $configFilePath = "config.json"
 $configDistFilePath = "config.json.dist"
 $checkFile = Test-Path $configFilePath
-if (-not $checkFile) {
+if (-Not $checkFile) {
     Write-Host "Die Konfigurationsdatei $configFilePath konnte nicht gefunden werden. Bitte erstellen Sie eine Konfigurationsdatei mit dem Dateinamen $configFilePath im Wurzelverzeichnis dieser Anwendung. Dafür kann die Datei $configDistFilePath, die ebenfalls im Wurzelverzeichnis liegt, als Vorlage verwendet werden."
     exit 0
 }
@@ -77,7 +77,7 @@ Write-Host
 Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 Write-Host
 
-if (-not $files) {
+if (-Not $files) {
     if ($iterateThrough -eq "pdf") {
         Write-Log "Keine $($iterateThrough.ToUpper())-Dateien in $pdfPath" warn
     }
@@ -164,7 +164,7 @@ else {
                     # Write-Host $line
                     $Matches = ""
     
-                    if (-not ($line)) {
+                    if (-Not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPath
                         Write-Log "$line" warn $logPath
                         if (-Not $debug) {
@@ -221,7 +221,7 @@ else {
                     $line = Select-String -Pattern $fallPattern $txtPathname
                     $Matches = ""
     
-                    if (-not ($line)) {
+                    if (-Not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPath
                         Write-Log "$line" warn $logPath
                         if (-Not $debug) {
@@ -311,7 +311,7 @@ else {
                     $line = Select-String -Pattern $fallPattern $txtPathname
                     $Matches = ""
     
-                    if (-not ($line)) {
+                    if (-Not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPath
                         Write-Log "$line" warn $logPath
                         if (-Not $debug) {

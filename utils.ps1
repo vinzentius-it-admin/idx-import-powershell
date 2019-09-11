@@ -29,7 +29,7 @@ function Write-Log {
     }
     Process {
         # If attempting to write to a log file in a folder/path that doesn't exist create the file including the path.
-        if (!(Test-Path $logfile)) {
+        if (-Not (Test-Path $logfile)) {
             Write-Verbose "Erstelle Logdatei: $logfile."
         }
         # Format Date for our Log File
@@ -51,7 +51,7 @@ function Write-Log {
             }
         }
     
-        if (![string]::IsNullOrEmpty($logPath)) {
+        if (-Not [string]::IsNullOrEmpty($logPath)) {
             # Write log entry to $Path
             "$FormattedDate $LevelText $Message" | Out-File -FilePath $logfile -Append
         }
