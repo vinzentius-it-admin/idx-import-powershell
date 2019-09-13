@@ -13,6 +13,11 @@ param (
     [parameter(Mandatory=$true)]
     [alias("Target")]
     [string] $ArchiveStorage,
+	# Delete files from soure folder older than x days. 
+	# 240 days = 8 months
+    [parameter(Mandatory=$false)]
+    [alias("Limit")]
+    [string] $deleteFilesOlderThan = 240,
 	# Short name to begin the filename of the .zip archive 
 	[parameter(Mandatory=$true)]
 	[alias("ArchiveName")]
@@ -193,11 +198,14 @@ begin{
 }
 process{
 	$TargetFiles = New-Object Collections.Generic.List[String]
+	$limit = (Get-Date).AddDays(-$deleteFilesOlderThan)
+	# group and backup files not older than limit
 	dir $Folder | where {  
 		!$_.PSIsContainer `
 		-and $_.extension -eq $FileExtension `
 		-and $ArchiveGroupingString -f $_.LastWriteTime -le $ArchiveDate `
-		-and $_.fullname -match $FileNamePattern
+		-and $_.fullname -match $FileNamePattern `
+		-and $_.LastWriteTime -gt $limit
 	} | group {  
 		$ArchiveGroupingString -f $_.LastWriteTime  
 	} | foreach { 
@@ -219,13 +227,7 @@ process{
 				#supress printing True to screen
 				$null = $TargetFiles.Remove($File)
 				#echo "Archived : $File  --> $ZipFileName"
-				if($TestMode) { 
-					# Show what files would be deleted 
-					Remove-Item -Path $File -WhatIf 
-				} else { 
-					# Delete the original files 
-					Remove-Item -Path $File
-				} 
+                Write-Host "Archived : $File  --> $ZipFileName" -ForegroundColor Green
 			}
 			foreach($file in $TargetFiles) {
 				echo "Failed: $file"
@@ -237,6 +239,27 @@ process{
 				echo "Failed: $file"
 			}
 			exit -1
+		}
+	}
+	# delte files older than limit
+	dir $Folder | where {  
+		!$_.PSIsContainer `
+		-and $_.extension -eq $FileExtension `
+		-and $ArchiveGroupingString -f $_.LastWriteTime -le $ArchiveDate `
+		-and $_.fullname -match $FileNamePattern `
+		-and $_.LastWriteTime -lt $limit
+	} | group {  
+		$ArchiveGroupingString -f $_.LastWriteTime  
+	} | foreach { 
+		$_.group | foreach {
+			if($TestMode) {
+				# Show what files would be deleted 
+				Remove-Item -Path $_ -WhatIf 
+			} else {
+				# Delete the original files 
+				Remove-Item -Path $_
+                Write-Host "Deleted : $_" -ForegroundColor Red
+			}
 		}
 	}
 	# If the option to remove old archives is set to $true in the settings section, do so 
