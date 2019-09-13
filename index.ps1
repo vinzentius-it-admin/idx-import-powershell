@@ -167,12 +167,10 @@ else {
                 Arztbrief {
                     # Fallnummer auf Aufkleber: 7-stellig [Leer] Datum [Leer] ACH
                     $line = Select-String -pattern "^(\d{7}|\d{6})\s*\d{2}[.,]\d{2}[.,]\d{4}\s*ACH" $txtPathname
-                    # Write-Host $line
                     $Matches = ""
     
                     if (-Not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
                             Copy-Item -Force $pdfPathname $byHandPath
@@ -192,7 +190,6 @@ else {
                     }
                     else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
                             Copy-Item -Force $pdfPathname $byHandPath
@@ -208,7 +205,6 @@ else {
     
                     if (-Not ([string]$line -Match ":\d{1,2}:(\w*)[,]\s*(\w*)")) {
                         Write-Log "Kein Treffer für Name, Vorname in $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         continue fileloop
                     }
     
@@ -229,7 +225,6 @@ else {
     
                     if (-Not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
                             Copy-Item -Force $pdfPathname $byHandPath
@@ -245,7 +240,6 @@ else {
                     }
                     else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
                             Copy-Item -Force $pdfPathname $byHandPath
@@ -262,7 +256,6 @@ else {
                     # if (-Not ([string]$line -Match "Patient.*:\s*\w*(?:\s*\w*)?(?:[,.])?\s*(\w*)(?:[,.])?\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {
                     if (-Not ([string]$line -Match "Patient.*:.*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {                
                         Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         continue fileloop
                     }
         
@@ -319,7 +312,6 @@ else {
     
                     if (-Not ($line)) {
                         Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
                             Copy-Item -Force $pdfPathname $byHandPath
@@ -335,7 +327,6 @@ else {
                     }
                     else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
                             Copy-Item -Force $pdfPathname $byHandPath
@@ -349,7 +340,6 @@ else {
                     $line = Select-String -Pattern "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*" $txtPathname
                     if (-Not ([string]$line -Match "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)?\s*")) {
                         Write-Log "Kein Treffer für Vorname und Name in $txtPathname" warn $logPathname
-                        Write-Log "$line" warn $logPathname
                         continue fileloop
                     }
 
