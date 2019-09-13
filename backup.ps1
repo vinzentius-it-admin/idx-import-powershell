@@ -34,7 +34,7 @@ $department = $config.department
     -ArchiveName "$department-PDF-" `
     -ArchiveGrouping month `
     -extn .pdf `
-    -deleteFilesOlderThan 240 `
+    -deleteFilesOlderThan 120 `
     -TestMode:$debug
 
 .\archiveFiles.ps1 `
