@@ -6,3 +6,4 @@ log/*
 *.log
 .vscode/
 config.*.json
+backup
