@@ -3,7 +3,7 @@
 # Durch Ausführen mit dem Argument "-writeidx" wird jeweils eine IDX-Datei erstellt
 
 Param (
-    [switch]$keep
+    [switch]$debug = $false
 )
 
 # load config file
@@ -22,11 +22,26 @@ $backupTxtPath = $config.backupTxtPath
 $backupZipPath = $config.backupZipPath
 $department = $config.department
 
-.\archiveFiles.ps1 -source $backupPdfPath -Target $backupZipPath -ArchiveName "$department-PDF-" -ArchiveGrouping month -extn .pdf -TestMode:$false
+# $today = Get-Date
+# $limit = (Get-Date).AddDays(-120)
+# Write-Host $today
+# Write-Host $limit
+# exit
 
-#.\archiveFiles.ps1 
-#  -source $backupTxtPath 
-#  -target $backupZipPath 
-#  -ArchiveName "$department-TXT-" 
-#  -ArchiveGrouping month 
-#  -extn .txt
+.\archiveFiles.ps1 `
+    -source $backupPdfPath `
+    -Target $backupZipPath `
+    -ArchiveName "$department-PDF-" `
+    -ArchiveGrouping month `
+    -extn .pdf `
+    -deleteFilesOlderThan 240 `
+    -TestMode:$debug
+
+.\archiveFiles.ps1 `
+    -source $backupTxtPath `
+    -Target $backupZipPath `
+    -ArchiveName "$department-TXT-" `
+    -ArchiveGrouping month `
+    -extn .txt `
+    -deleteFilesOlderThan 120 `
+    -TestMode:$debug
