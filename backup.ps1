@@ -21,12 +21,31 @@ $backupPdfPath = $config.backupPdfPath
 $backupTxtPath = $config.backupTxtPath
 $backupZipPath = $config.backupZipPath
 $department = $config.department
+$deleteFilesOlderThan = $config.deleteFilesOlderThan
 
-# $today = Get-Date
-# $limit = (Get-Date).AddDays(-120)
-# Write-Host $today
-# Write-Host $limit
-# exit
+$today = Get-Date -Format dd.MM.yyyy
+$limit = (Get-Date).AddDays(-$deleteFilesOlderThan).toString('dd.MM.yyyy')
+
+Clear-Host
+Write-Host
+Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+Write-Host
+Write-Host "  DATUM HEUTE                $today                        "
+Write-Host
+Write-Host "  LÖSCHE DATEIEN ÄLTER ALS   $limit                        "
+Write-Host
+Write-Host "  DIFFERENZ IN TAGEN         $deleteFilesOlderThan         "
+Write-Host
+Write-Host "  DATEIEN NICHT LÖSCHEN MIT  -debug                        "
+Write-Host
+Write-Host "  ACHTUNG: DIESES STAPELVERARBEITUNGSPROGRAMM SOLLTE       "
+Write-Host "  SPÄTESTENS ALLE $deleteFilesOlderThan TAGE AUSGEFÜHRT    "
+Write-Host "  WERDEN, SONST GEHEN DIE DATEIEN VERLOREN, DIE ZWISCHEN   "
+Write-Host "  DER LETZTEN DATENSICHERUNG UND DEM AKTUELLEN DATUMSLIMIT "
+Write-Host "  ERZEUGT WURDEN ODER MAN DEAKTIVIERT DIE LÖSCHUNG EINFACH "
+Write-Host
+Write-Host "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+Write-Host
 
 .\archiveFiles.ps1 `
     -source $backupPdfPath `
@@ -34,7 +53,7 @@ $department = $config.department
     -ArchiveName "$department-PDF-" `
     -ArchiveGrouping month `
     -extn .pdf `
-    -deleteFilesOlderThan 120 `
+    -deleteFilesOlderThan $deleteFilesOlderThan `
     -TestMode:$debug
 
 .\archiveFiles.ps1 `
@@ -43,5 +62,5 @@ $department = $config.department
     -ArchiveName "$department-TXT-" `
     -ArchiveGrouping month `
     -extn .txt `
-    -deleteFilesOlderThan 120 `
+    -deleteFilesOlderThan $deleteFilesOlderThan `
     -TestMode:$debug
