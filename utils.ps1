@@ -13,20 +13,15 @@ function Write-Log {
         [string]$Level = "Info",
     
         [Parameter(Mandatory = $false)]
-        [string]$logPath = ""
+        [string]$logPathname = ""
     )
 
     Begin {
-        # Set VerbosePreference to Continue so that verbose messages are displayed.
-        $VerbosePreference = 'Continue'
-        $Week = Get-Date -UFormat %V  
-        $logfile = -join ($logPath, "ACH-KW", $Week, ".log")
-
     }
     Process {
         # If attempting to write to a log file in a folder/path that doesn't exist create the file including the path.
-        if (-Not (Test-Path $logfile)) {
-            Write-Verbose "Erstelle Logdatei: $logfile."
+        if (-Not (Test-Path $logPathname)) {
+            Write-Verbose "Erstelle Logdatei: $logPathname."
         }
         # Format Date for our Log File
         $FormattedDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -47,9 +42,9 @@ function Write-Log {
             }
         }
     
-        if (-Not [string]::IsNullOrEmpty($logPath)) {
+        if (-Not [string]::IsNullOrEmpty($logPathname)) {
             # Write log entry to $Path
-            "$FormattedDate $LevelText $Message" | Out-File -FilePath $logfile -Append
+            "$FormattedDate $LevelText $Message" | Out-File -FilePath $logPathname -Append
         }
     }
     End {
