@@ -9,7 +9,7 @@ function Write-Log {
         [string]$Message = "",
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Error", "Warn", "Info")]
+        [ValidateSet("Error", "Warn", "Info", "Success")]
         [string]$Level = "Info",
     
         [Parameter(Mandatory = $false)]
@@ -39,6 +39,10 @@ function Write-Log {
             'Info' {
                 Write-Host "$Message" -ForegroundColor Cyan
                 $LevelText = 'INFO:           '
+            }
+            'Success' {
+                Write-Host "$Message" -ForegroundColor Green
+                $LevelText = 'SUCCESS:           '
             }
         }
     
