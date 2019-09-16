@@ -11,7 +11,7 @@ Param (
 . ./utils.ps1
 
 # load config file
-$configFilePath = "config.json"
+$configFilePath = "config/config.json"
 $configFilePathDist = "config.json.dist"
 $checkFile = Test-Path $configFilePath
 if (-Not $checkFile) {
@@ -24,7 +24,6 @@ $files = @()
 $count_nothing = 0
 $Datum = Get-Date -Format dd.MM.yyyy
 $inputPath = ""
-$logPathname = ""
 
 # parse config file
 $config = Get-Content -Raw -Path $configFilePath | ConvertFrom-Json
@@ -41,6 +40,7 @@ $pdfFileExtension = $config.pdfFileExtension
 $idxFileExtension = $config.idxFileExtension
 $txtFileExtension = $config.txtFileExtension
 $okfileExtension = $config.okfileExtension
+$logPathname = -join ("log/",$department,".log")
 
 # validation of config parameters
 if (
