@@ -11,7 +11,7 @@ Param (
 . ./utils.ps1
 
 # load config file
-$configFilePath = "config.json"
+$configFilePath = "config/config.json"
 $configFilePathDist = "config.json.dist"
 $checkFile = Test-Path $configFilePath
 if (-Not $checkFile) {
@@ -24,7 +24,6 @@ $files = @()
 $count_nothing = 0
 $Datum = Get-Date -Format dd.MM.yyyy
 $inputPath = ""
-$logPathname = ""
 
 # parse config file
 $config = Get-Content -Raw -Path $configFilePath | ConvertFrom-Json
@@ -41,6 +40,8 @@ $pdfFileExtension = $config.pdfFileExtension
 $idxFileExtension = $config.idxFileExtension
 $txtFileExtension = $config.txtFileExtension
 $okfileExtension = $config.okfileExtension
+
+$logPathname = -join("log\",$department,".log")
 
 # validation of config parameters
 if (
@@ -240,6 +241,7 @@ else {
                     }
                     else {
                         Write-Log "Konnte Fallnummer nicht extrahieren aus $txtPathname" warn $logPathname
+                        Write-Log "Line $line"  warn $logPathname
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
                             Copy-Item -Force $pdfPathname $byHandPath
@@ -300,11 +302,9 @@ else {
                     Write-Log "Nachname:         $Nachname" info $logPathname
                     Write-Log "Geburtsdatum:     $GebDatum" info $logPathname
                 }
-    
-                { 
-                    "Leistungsbescheid",
-                    "Zuzahlungsaufforderung"
-                } {
+
+                {($_ -eq "Leistungsbescheid") -or ($_ -eq "Zuzahlungsaufforderung") }
+                {
                     # Fallnummer
                     $fallPattern = @("Fall-Nr")
                     $line = Select-String -Pattern $fallPattern $txtPathname
