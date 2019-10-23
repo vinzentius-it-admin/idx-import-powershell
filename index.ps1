@@ -282,11 +282,17 @@ else {
                             $Nachname = $Matches[2]
                             $GebDatum = $Matches[4]
                         }
-                    }      # Check: Doppelter Vorname
+                    }      # Check: Vorname mit Bindestrich
                     elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
                         $Vorname = $Matches[2]
                         $Nachname = $Matches[1]
-    
+                        $GebDatum = $Matches[3]
+                    }
+                            # Check: Nachname mit Bindestrich
+                    elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
+                            $Vorname = $Matches[2]
+                            $Nachname = $Matches[1]  
+                            $GebDatum = $Matches[3]
                     }
                     else {
                         if (-Not $debug) {
