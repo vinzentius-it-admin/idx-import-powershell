@@ -40,6 +40,7 @@ $pdfFileExtension = $config.pdfFileExtension
 $idxFileExtension = $config.idxFileExtension
 $txtFileExtension = $config.txtFileExtension
 $okfileExtension = $config.okfileExtension
+$logPathname = -join ("log/",$department,".log")
 
 $logPathname = -join("log\",$department,".log")
 
