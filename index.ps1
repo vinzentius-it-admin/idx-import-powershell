@@ -267,11 +267,11 @@ else {
                     $line = $line -replace "med[,.]", ""
         
                     # Nachname, Vorname
-                    if ([string]$line -Match "Patient.*:\s*(\w*)[,.]\s*(\w*)\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
+                    if ([string]$line -Match "Patient.*:\s*([\w-]*)[,.]\s*([\w-]*)\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
                         $Vorname = $Matches[2]
                         $Nachname = $Matches[1]
                     }      # Check: 2 Vornamen
-                    elseif ([string]$line -Match "Patient.*:\s*(\w*)\s*(\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
+                    elseif ([string]$line -Match "Patient.*:\s*([\w-]*)\s*([\w-]*)\s*([\w-]*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
                         if ($Matches[3]) {
                             # Drei Namen, 3. ist Nachname
                             $Vorname = -join ($Matches[1], " ", $Matches[2])
@@ -284,17 +284,17 @@ else {
                             $GebDatum = $Matches[4]
                         }
                     }      # Check: Vorname mit Bindestrich
-                    elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                        $Vorname = $Matches[2]
-                        $Nachname = $Matches[1]
-                        $GebDatum = $Matches[3]
-                    }
+                    # elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
+                        # $Vorname = $Matches[2]
+                        # $Nachname = $Matches[1]
+                        # $GebDatum = $Matches[3]
+                    # }
                             # Check: Nachname mit Bindestrich
-                    elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                            $Vorname = $Matches[2]
-                            $Nachname = $Matches[1]  
-                            $GebDatum = $Matches[3]
-                    }
+                    # elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
+                            # $Vorname = $Matches[2]
+                            # $Nachname = $Matches[1]  
+                            # $GebDatum = $Matches[3]
+                    # }
                     else {
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
