@@ -105,6 +105,7 @@ else {
         $line = ""
         $Fallnr = ""
         $Vorname = ""
+        $Nachname = ""
         $GebDatum = ""
 
         if ($iterateThrough -like '*pdf*') {
@@ -218,10 +219,74 @@ else {
                     Write-Log "Geburtsdatum:     $GebDatum" info $logPathname
     
                 }
-    
+
+                Heliobacter-Schnelltest {
+                
+                    # die erste 6/7 - stellige Nr am Zeilenanfang
+                    $line = Select-String -Pattern "^(\d{7}|\d{6})(\s.*)?" $txtPathname
+
+                    if (-Not ($line)) {
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPathname
+                        if (-Not $debug) {
+                            Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                            Copy-Item -Force $pdfPathname $byHandPath
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
+                        continue fileloop
+                    }
+
+                    [string]$line.line -Match "^(\d{7}|\d{6}).*"
+                    $Fallnr = $Matches[1]
+                    Write-Log "Fallnr:          $Fallnr" info $logPathname
+                                                    
+                    # Name Vorname : Zeilenanfang, kommagetrennt, 1. Treffer
+                    $line = Select-String -Pattern "^[\w-]*, [\w-]*.*" $txtPathname | Select-Object -First 1
+                    $Matches = ""
+                    if (-not ([string]$line.Line -Match "^[\w-]*, [\w-]*.*")) {                
+                        Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logPathname
+                        continue fileloop
+                    }
+                    if ([string]$line.Line -Match "^([\w-]*),\s*([\w-]*)\s*([\w-]*)?") {
+                        $Nachname = $Matches[1]
+                        try {
+                            $Matches[3] = [int]$Matches[3]
+                            }
+                        catch {}
+                        if ($Matches[3] -isnot [int] ) {  # 2 Vornamen
+                            $Vorname = -join ($Matches[2], " ", $Matches[3])              
+                        }
+                        else {
+                            $Vorname = $Matches[2]
+                        }
+                    # GebDatum - in derselben Zeile wie Name
+                    if ([string]$line.Line -Match ".*(\w{2}[.,]\w{2}[.,]\w{4})") {
+                            $GebDatum = $Matches[1]
+                        }
+                    else {      # Suche Line mit Datumspattern (ungenau)
+                            $line = Select-String -Pattern "^(\w{2}[.,]\w{2}[.,]\w{4}).*" $txtPathname | Select-Object -First 1
+                            [string]$line.Line -Match "(\w{2}[.,]\w{2}[.,]\w{4})"
+                            $GebDatum = $Matches[1]
+                        }
+                    }      
+                    else {
+                        if (-Not $debug) {
+                            Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                            Copy-Item -Force $pdfPathname $byHandPath
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
+                        continue fileloop  
+                    } 
+
+                    Write-Log "Vorname:          $Vorname" info $logPathname
+                    Write-Log "Nachname:         $Nachname" info $logPathname
+                    Write-Log "Geburtsdatum:     $GebDatum" info $logPathname
+                }
+                
                 Histologie {
                     # Fallnummer
-                    $fallPattern = @("Fall-Nr", "Fallnummer")
+                    # $fallPattern = @("Fall-Nr", "Fallnummer")
                     $line = Select-String -Pattern $fallPattern $txtPathname
                     $Matches = ""
     
@@ -283,18 +348,7 @@ else {
                             $Nachname = $Matches[2]
                             $GebDatum = $Matches[4]
                         }
-                    }      # Check: Vorname mit Bindestrich
-                    # elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                        # $Vorname = $Matches[2]
-                        # $Nachname = $Matches[1]
-                        # $GebDatum = $Matches[3]
-                    # }
-                            # Check: Nachname mit Bindestrich
-                    # elseif ([string]$line -Match "Patient.*:\s*(\w*-\w*)\s*(\w*)?[,.]\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                            # $Vorname = $Matches[2]
-                            # $Nachname = $Matches[1]  
-                            # $GebDatum = $Matches[3]
-                    # }
+                    }
                     else {
                         if (-Not $debug) {
                             Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
@@ -305,6 +359,55 @@ else {
                         continue fileloop  
                     } 
     
+                    Write-Log "Vorname:          $Vorname" info $logPathname
+                    Write-Log "Nachname:         $Nachname" info $logPathname
+                    Write-Log "Geburtsdatum:     $GebDatum" info $logPathname
+                }
+
+                Laktose-Schnelltest {
+                    # die erste 6/7 - stellige Nr am Zeilenanfang
+                    $line = Select-String -Pattern "^(\d{7}|\d{6})([\s-]*)?" $txtPathname
+                    
+                    if (-Not ($line)) {
+                        Write-Log "KEINE FALLNUMMER GEFUNDEN IN $txtPathname" warn $logPathname
+                        if (-Not $debug) {
+                            Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                            Copy-Item -Force $pdfPathname $byHandPath
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
+                        continue fileloop
+                    }
+
+                    [string]$line.line -Match "^(\d{7}|\d{6}).*"
+                    $Fallnr = $Matches[1]
+                    Write-Log "Fallnr:          $Fallnr" info $logPathname                       
+                                
+                    # Name, Vorname in derselben Zeile
+                    if ([string]$line.Line -match "([\w-]*), ([\w-]*) (\w*)?") {                
+                        $Nachname = $Matches[1]
+                        $Vorname = $Matches[2]
+                        try {$Matches[3] = [int]$Matches[3]}
+                        catch {}
+                        if ($Matches[3] -isnot [int] ) {
+                            # 2 Vornamen
+                            $Vorname = -join ($Matches[2], " ", $Matches[3])              
+                        }
+                    }
+                    else {  # erster Match \w, am zeilenanfang
+                        $line = Select-String -Pattern "^[\w-]*, [\w-]*" $txtPathname | Select-Object -First 1
+                        [string]$line.line -match "^([\w-]*), ([\w-]*)\s?([\w-])?"
+                        $Nachname = $Matches[1]
+                        $Vorname = $Matches[2]
+                        try {$Matches[3] = [int]$Matches[3]}
+                        catch {}
+                        if ($Matches[3] -isnot [int] ) {
+                            # 2 Vornamen
+                            $Vorname = -join ($Matches[2], " ", $Matches[3])              
+                        }
+
+                    }
+                                              
                     Write-Log "Vorname:          $Vorname" info $logPathname
                     Write-Log "Nachname:         $Nachname" info $logPathname
                     Write-Log "Geburtsdatum:     $GebDatum" info $logPathname
