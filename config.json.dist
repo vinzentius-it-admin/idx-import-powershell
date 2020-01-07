@@ -6,6 +6,7 @@
     "backupTxtPath": "./data/backup-txt/",
     "backupPdfPath": "./data/backup-pdf/",
     "backupZipPath": "C:/IDX-BACKUP/",
+    "deleteFilesOlderThan": 240,
     "byHandPath": "./data/by-hand/",
     "logPath": "./log/",
     "iterateThrough": "pdf",
