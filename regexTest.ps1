@@ -1,26 +1,34 @@
 Write-Host "****************************"
-Write-Host "****************************"
-Write-Host "****************************"
 Write-Host ""
 
-$fileName = "./data/txt/<filename>.txt"
+$Matches = ''
 
-$checkFile = Test-Path $fileName
+$files = Get-ChildItem "./data/txt/" -Filter "*.txt"
 
-if ($checkFile) {
-    $line = Select-String -Pattern "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*" $fileName
+# $fileName = "./data/txt/dms_20191127102900.txt"
+
+:fileloop foreach ($filename in $files) {
+
+    # $line = Select-String -Pattern "^(\d{7}|\d{6})([\s-]*)?" $fileName | Select-Object -First 1
+    $line = Select-String -Pattern "^[\w-]*, [\w-]*.*" $fileName | Select-Object -First 1
+    
     Write-Host ($line | Format-List | Out-String)
-    
-    if (-Not ([string]$line -Match "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)?\s*")) {
-        Write-Warning "Kein Treffer:                 $fileName"
-        Write-Host ""
-        Write-Host ""
-    }
-    
-    Write-Host ($Matches | Format-Table | Out-String)
-}
-else {
-    Write-Warning "Datei nicht gefunden:         $fileName"
-    Write-Host ""
-}
+    [string]$line.Line -Match "([\w-]*), ([\w-]*)\s?(\w*)?"
+    # [string]$line.Line -Match  "^(\d{7}|\d{6})([\s-]*)?"
 
+    # $Fallnr = $Matches[1]
+
+    $Nachname = $Matches[1]
+    $Vorname = $Matches[2]
+    # $Matches[3].GetType()
+    try {$Matches[3] = [int]$Matches[3]}
+    catch {}
+    if ($Matches[3] -isnot [int] ) {
+        # 2 Vornamen
+        $Vorname = -join ($Matches[2], " ", $Matches[3])              
+    }
+
+    Write-Host ($Matches | Format-Table | Out-String)
+    Write-Host "Vorname :" $Vorname
+    Write-Host "Nachname :" $Nachname
+}
