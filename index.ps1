@@ -286,7 +286,7 @@ else {
                 
                 Histologie {
                     # Fallnummer
-                    # $fallPattern = @("Fall-Nr", "Fallnummer")
+                    $fallPattern = @("Fall-Nr", "Fallnummer")
                     $line = Select-String -Pattern $fallPattern $txtPathname
                     $Matches = ""
     
