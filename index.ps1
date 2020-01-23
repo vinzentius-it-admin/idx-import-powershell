@@ -424,8 +424,14 @@ else {
                         }
 
                     }
-                                              
-                    Write-Log "Vorname:          $Vorname" info $logPathname
+
+                    # Suche Line mit Datumspattern (ungenau)
+                    $line = Select-String -Pattern "^(\w{2}[.,]\w{2}[.,]\w{4}).*" $txtPathname | Select-Object -First 1
+                        if ([string]$line.Line -Match "(\w{2}[.,]\w{2}[.,]\w{4})") {
+                        $GebDatum = $Matches[1]
+                        }
+
+                        Write-Log "Vorname:          $Vorname" info $logPathname
                     Write-Log "Nachname:         $Nachname" info $logPathname
                     Write-Log "Geburtsdatum:     $GebDatum" info $logPathname
                 }
