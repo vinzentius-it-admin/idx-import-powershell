@@ -240,14 +240,8 @@ else {
                     $Fallnr = $Matches[1]
                     Write-Log "Fallnr:          $Fallnr" info $logPathname
                                                     
-                    # Name Vorname : Zeilenanfang, kommagetrennt, 1. Treffer
-                    $line = Select-String -Pattern "^[\w-]*, [\w-]*.*" $txtPathname | Select-Object -First 1
-                    $Matches = ""
-                    if (-not ([string]$line.Line -Match "^[\w-]*, [\w-]*.*")) {                
-                        Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logPathname
-                        continue fileloop
-                    }
-                    if ([string]$line.Line -Match "^([\w-]*),\s*([\w-]*)\s*([\w-]*)?") {
+                    # Name Vorname : selbe Zeile
+                    if ([string]$line.Line -Match "([\w-]*),\s*([\w-]*)\s*([\w-]*)?") {
                         $Nachname = $Matches[1]
                         try {
                             $Matches[3] = [int]$Matches[3]
@@ -259,6 +253,30 @@ else {
                         else {
                             $Vorname = $Matches[2]
                         }
+                    }
+                    else {
+                        # Name Vorname : Zeilenanfang, kommagetrennt, 1. Treffer
+                        $line = Select-String -Pattern "^[\w-]*, [\w-]*.*" $txtPathname | Select-Object -First 1
+                        $Matches = ""
+                        if (-not ([string]$line.Line -Match "^[\w-]*, [\w-]*.*")) {                
+                            Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logPathname
+                            continue fileloop
+                        }
+                        if ([string]$line.Line -Match "^([\w-]*),\s*([\w-]*)\s*([\w-]*)?") {
+                            $Nachname = $Matches[1]
+                            try {
+                                $Matches[3] = [int]$Matches[3]
+                                }
+                            catch {}
+                            if ($Matches[3] -isnot [int] ) {  # 2 Vornamen
+                                $Vorname = -join ($Matches[2], " ", $Matches[3])              
+                            }
+                            else {
+                                $Vorname = $Matches[2]
+                            }
+                        } 
+                    }
+                    
                     # GebDatum - in derselben Zeile wie Name
                     if ([string]$line.Line -Match ".*(\w{2}[.,]\w{2}[.,]\w{4})") {
                             $GebDatum = $Matches[1]
