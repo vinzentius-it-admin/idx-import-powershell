@@ -285,17 +285,16 @@ else {
                             $line = Select-String -Pattern "^(\w{2}[.,]\w{2}[.,]\w{4}).*" $txtPathname | Select-Object -First 1
                             [string]$line.Line -Match "(\w{2}[.,]\w{2}[.,]\w{4})"
                             $GebDatum = $Matches[1]
-                        }
-                    }      
-                    else {
-                        if (-Not $debug) {
-                            Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
-                            Copy-Item -Force $pdfPathname $byHandPath
-                            Move-Item -Force $pdfPathname $backupPdfPath 
-                            Move-Item -Force $txtPathname $backupTxtPath
-                        }
-                        continue fileloop  
-                    } 
+                        }      
+                    # else {
+                    #     if (-Not $debug) {
+                    #         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                    #         Copy-Item -Force $pdfPathname $byHandPath
+                    #         Move-Item -Force $pdfPathname $backupPdfPath 
+                    #         Move-Item -Force $txtPathname $backupTxtPath
+                    #     }
+                    #     continue fileloop  
+                    # } 
 
                     Write-Log "Vorname:          $Vorname" info $logPathname
                     Write-Log "Nachname:         $Nachname" info $logPathname
