@@ -208,6 +208,12 @@ else {
     
                     if (-Not ([string]$line -Match ":\d{1,2}:(\w*)[,]\s*(\w*)")) {
                         Write-Log "Kein Treffer für Name, Vorname in $txtPathname" warn $logPathname
+                        if (-Not $debug) {
+                            Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                            Copy-Item -Force $pdfPathname $byHandPath
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }
     
@@ -260,8 +266,14 @@ else {
                         $Matches = ""
                         if (-not ([string]$line.Line -Match "^[\w-]*, [\w-]*.*")) {                
                             Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logPathname
+                            if (-Not $debug) {
+                                Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                                Copy-Item -Force $pdfPathname $byHandPath
+                                Move-Item -Force $pdfPathname $backupPdfPath 
+                                Move-Item -Force $txtPathname $backupTxtPath
+                            }
                             continue fileloop
-                        }
+                            }
                         if ([string]$line.Line -Match "^([\w-]*),\s*([\w-]*)\s*([\w-]*)?") {
                             $Nachname = $Matches[1]
                             try {
@@ -341,6 +353,12 @@ else {
                     # if (-Not ([string]$line -Match "Patient.*:\s*\w*(?:\s*\w*)?(?:[,.])?\s*(\w*)(?:[,.])?\s*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {
                     if (-Not ([string]$line -Match "Patient.*:.*ge[bh]..*\s*(\w{2}[.,]\w{2}[.,]\w{4})")) {                
                         Write-Log "Keine Treffer für Name, Vorname in $txtPathname" warn $logPathname
+                        if (-Not $debug) {
+                            Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                            Copy-Item -Force $pdfPathname $byHandPath
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }
         
@@ -431,7 +449,7 @@ else {
                         $GebDatum = $Matches[1]
                         }
 
-                        Write-Log "Vorname:          $Vorname" info $logPathname
+                    Write-Log "Vorname:          $Vorname" info $logPathname
                     Write-Log "Nachname:         $Nachname" info $logPathname
                     Write-Log "Geburtsdatum:     $GebDatum" info $logPathname
                 }
@@ -473,6 +491,12 @@ else {
                     $line = Select-String -Pattern "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*" $txtPathname
                     if (-Not ([string]$line -Match "\s*Name\s+(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)\s*(\w*(?:-\w*)?)?\s*")) {
                         Write-Log "Kein Treffer für Vorname und Name in $txtPathname" warn $logPathname
+                        if (-Not $debug) {
+                            Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
+                            Copy-Item -Force $pdfPathname $byHandPath
+                            Move-Item -Force $pdfPathname $backupPdfPath 
+                            Move-Item -Force $txtPathname $backupTxtPath
+                        }
                         continue fileloop
                     }
 
