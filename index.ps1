@@ -291,13 +291,13 @@ else {
                     
                     # GebDatum - in derselben Zeile wie Name
                     if ([string]$line.Line -Match ".*(\w{2}[.,]\w{2}[.,]\w{4})") {
-                            $GebDatum = $Matches[1]
+                            $GebDatum = $Matches[1] -replace ",","."
                         }
                     else {      # Suche Line mit Datumspattern (ungenau)
                             $line = Select-String -Pattern "^(\w{2}[.,]\w{2}[.,]\w{4}).*" $txtPathname | Select-Object -First 1
                             [string]$line.Line -Match "(\w{2}[.,]\w{2}[.,]\w{4})"
-                            $GebDatum = $Matches[1]
-                        }      
+                            $GebDatum = $Matches[1] -replace ",","."
+                        } 
                     # else {
                     #     if (-Not $debug) {
                     #         Write-Log "Verschiebe Dateien nach $byHandPath und $backupPdfPath" warn $logPathname
@@ -376,12 +376,12 @@ else {
                             # Drei Namen, 3. ist Nachname
                             $Vorname = -join ($Matches[1], " ", $Matches[2])
                             $Nachname = $Matches[3]
-                            $GebDatum = $Matches[4]
+                            $GebDatum = $Matches[4] -replace ",","."
                         }
                         else {
                             $Vorname = $Matches[1]
                             $Nachname = $Matches[2]
-                            $GebDatum = $Matches[4]
+                            $GebDatum = $Matches[4] -replace ",","."
                         }
                     }
                     else {
@@ -446,7 +446,7 @@ else {
                     # Suche Line mit Datumspattern (ungenau)
                     $line = Select-String -Pattern "^(\w{2}[.,]\w{2}[.,]\w{4}).*" $txtPathname | Select-Object -First 1
                         if ([string]$line.Line -Match "(\w{2}[.,]\w{2}[.,]\w{4})") {
-                        $GebDatum = $Matches[1]
+                        $GebDatum = $Matches[1] -replace ",","."
                         }
 
                     Write-Log "Vorname:          $Vorname" info $logPathname
